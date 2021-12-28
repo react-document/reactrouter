@@ -15,3 +15,10 @@ node_modules/
 /packages/*/umd/
 
 .eslintcache
+
+.idea
+.yarn
+yarn.lock
+.yarnrc.yml
+.pnp.loader.mjs
+.pnp.cjs
