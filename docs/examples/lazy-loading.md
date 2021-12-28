@@ -1,5 +1,5 @@
 ---
-title: Installation
+title: 懒加载
 order: 6
 ---
 
