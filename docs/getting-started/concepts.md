@@ -51,6 +51,10 @@ Here are some words we use a lot when we talk about React Router. The rest of th
 
 - <a id="route-config">**Route Config**</a> - A tree of **routes objects** that will be ranked and matched (with nesting) against the current location to create a branch of **route matches**.
 
+- <a id="route">**Route**</a> - An object or Route Element typically with a shape of `path, element(这里外面两侧要包裹花括号)` or `&lt;Route path element>`. The `path` is a path pattern. When the path pattern matches the current URL, the element will be rendered.
+
+- <a id="route-element">**Route Element**</a> - Or `&lt;Route>`. This element's props are read to create a [route](#route) by `&lt;Routes>`, but otherwise does nothing.
+
 - <a id="nested-routes">**Nested Routes**</a> - Because routes can have children and each route defines a portion of the [URL](#url) through [segments](#segment), a single URL can match multiple routes in a nested "branch" of the tree. This enables automatic layout nesting through [outlet](#outlet), [relative links](#relative-links), and more.
 
 - <a id="relative-links">**Relative links**</a> - Links that don't start with `/` will inherit the closest route in which they are rendered. This makes it easy to link to deeper URLs without having to know and build up the entire path.
