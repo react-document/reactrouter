@@ -1,5 +1,5 @@
 ---
-title: Installation
+title: 基本
 order: 1
 ---
 
