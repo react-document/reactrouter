@@ -1,39 +1,39 @@
 ---
-title: Docs Home
+title: 文档首页
 toc: false
 order: 1
 ---
 
-# Welcome to React Router
+# 欢迎来到React Router
 
 <docs-cards>
   <a href="v6/getting-started/tutorial" aria-label="New to React Router?">
     <docs-card>
-      <h3>New to React Router?</h3> 
-      <p>We suggest you start with the tutorial. It's got everything you need to know to get up and running in React Router quickly.</p>
+      <h3>React Router新手?</h3> 
+      <p>我们建议你从教程开始，包含快速起步和运行React Router你需要知道的一切。</p>
     </docs-card>
   </a>
   <a href="v6/getting-started/overview" aria-label="Upgrading to v6?">
     <docs-card>
-      <h3>Familiar with React Router?</h3> 
-      <p>We introduced several new features and exciting changes in version 6. Learn all about them in this quick overview of the features that make v6 special.</p>
+      <h3>熟悉React Router?</h3> 
+      <p>我们在v6引进了一些新特性和激动人心的改变，在这个让v6变得特别的特性的快速概述中，了解关于它们的所有信息。</p>
     </docs-card>
   </a>
   <a href="v6/getting-started/concepts" aria-label="Upgrading to v6?">
     <docs-card>
-      <h3>Wanna dive deep?</h3> 
-      <p>Level up your understanding of React Router with the concepts, vocabulary, and design principles of React Router and routing in general. A must read for would-be contributors.</p>
+      <h3>想深入探索?</h3> 
+      <p>通过React Router和路由的概念、词汇和设计原则来加深你对React Router的理解，想要成为contributor的读者必读。</p>
     </docs-card>
   </a>
   <a href="v6/faq" aria-label="Frequently Asked Questions">
     <docs-card>
-      <h3>Frequently Asked Questions</h3> 
-      <p>Running into a problem? Chances are, you're not the first! Explore some of the questions that people commonly have about React Router v6.</p>
+      <h3>常见问题</h3> 
+      <p>遇到问题了吗?很有可能，你不是第一个!探索一些人们通常对React Router v6有疑问的地方。</p>
     </docs-card>
   </a>
 </docs-cards>
 
-## Previous Versions
+## 之前的版本
 
-- [React Router v4/5 docs](https://v5.reactrouter.com)
-- [React Router v3 docs](https://github.com/remix-run/react-router/tree/v3.2.6/docs)
+- [React Router v4/5文档](https://v5.reactrouter.com)
+- [React Router v3文档](https://github.com/remix-run/react-router/tree/v3.2.6/docs)
