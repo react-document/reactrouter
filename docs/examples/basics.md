@@ -11,7 +11,7 @@ order: 1
 - 使用`<Outlet>`作为子路由的占位符
 - 使用`<Link>`来导航
 
-# 预览
+## 预览
 在[StackBlitz](https://stackblitz.com/)上打开示例：      
 
 [![打开StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/github-hhg8lk?file=src%2FApp.tsx)      
