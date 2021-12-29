@@ -1,9 +1,9 @@
 ---
-title: 基本
+title: 基础示例
 order: 1
 ---
 
-# 基础样例
+# 基础示例
 本例展示了React Router的部分基本特性，包括：       
 - 布局和嵌套`<Route>`
 - 索引`<Route>`
@@ -12,4 +12,6 @@ order: 1
 - 使用`<Link>`来导航
 
 # 预览
-在[StackBlitz](https://stackblitz.com/edit/github-hhg8lk?file=src/App.tsx)上看样例。
+在[StackBlitz](https://stackblitz.com/)上打开示例：      
+
+[![打开StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/github-hhg8lk?file=src%2FApp.tsx)      
