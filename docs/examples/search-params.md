@@ -9,4 +9,4 @@ order: 10
 在这个例子中，我们使用一个表单来搜索一个GitHub用户，并显示他们的个人简介。
 
 ## 预览
-在[StackBlitz](https://stackblitz.com/)上打开这个[例子](https://stackblitz.com/github/remix-run/react-router/tree/main/examples/search-params?file=src/App.tsx)
+在[StackBlitz](https://stackblitz.com/)上打开这个[例子](https://stackblitz.com/edit/github-uowvw2?file=src/App.tsx)
