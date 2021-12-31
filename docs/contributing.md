@@ -41,7 +41,7 @@ git checkout dev
 ## 发起一个Pull Request？
 Pull request只需要两个或超过两个协作者同意就可以被合并；如果PR的作者是一个协作者，只需另一个协作者同意即可合并。
 
-> **重要内容：** 在github中创建PR时，请确保为代码仓库设置正确的分支。如果你提交的PR与代码有关，对应的分支就是`dev`分支。在 "Compare changes" 标题下方的下拉菜单中创建PR时，你可以在github中设置代码仓库：
+> **重要内容：** 在github中创建PR时，请确保为代码仓库设置正确的分支。如果你提交的PR与代码有关，对应的分支就是`dev`分支。创建PR时，在 "Compare changes" 标题下方的下拉菜单中，你可以设置base分支：
 >
 > <img src="https://raw.githubusercontent.com/remix-run/react-router/main/static/base-branch.png" alt="" width="460" height="350" />
 
