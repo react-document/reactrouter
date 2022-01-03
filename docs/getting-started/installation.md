@@ -1,21 +1,21 @@
 ---
-title: Installation
+title: 安装
 order: 1
 ---
 
-# Installation
+# 安装
 
-This document describes the most common ways people use React Router with various tools in the React Ecosystem.
+本文档将介绍在 React 生态系统中利用各种工具使用 React Router 的最常见方式。
 
-- [Basic Installation](#basic-installation)
+- [基本安装](#basic-installation)
 - [Create React App](#create-react-app)
 - [Parcel](#parcel)
 - [Webpack](#webpack)
 - [HTML Script Tags](#html-script-tags)
 
-## Basic Installation
+## 基本安装
 
-Most modern React projects manage their dependencies using a package manager like [npm](https://www.npmjs.com/) or [Yarn](https://yarnpkg.com/). To add React Router to an existing project, the first thing you should do is install the necessary dependencies with the tool of your choice:
+大多数现代 React 项目使用[npm](https://www.npmjs.com/)或[Yarn](https://yarnpkg.com/)等包管理器来管理它们的依赖关系。要将 React Router 添加到现有项目中，您应该做的第一件事就是使用您选择的工具安装必要的依赖项：
 
 <details>
 <summary>npm</summary>
@@ -46,9 +46,9 @@ $ pnpm add react-router-dom@6
 
 ## Create React App
 
-Follow the instructions in the [React documentation to set up a new project with Create React App](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app), then follow [the installation instructions above](#basic-installation) to install React Router in your project.
+按照 React 文档中的说明 [创建新的 React 应用](https://react.docschina.org/docs/create-a-new-react-app.html), 然后按照上面的 [基本安装](#basic-installation) 在项目中安装 React Router。
 
-Once your project is set up and React Router is installed as a dependency, open the `src/index.js` in your text editor. Import `BrowserRouter` from `react-router-dom` near the top of your file and wrap your app in a `<BrowserRouter>`:
+创建项目并将 React Router 作为依赖项安装后，请在文本编辑器中打开  `src/index.js` 文件。 在顶部导入 `react-router-dom` 中的 `BrowserRouter` 并包裹在 `<BrowserRouter>`标签中：
 
 ```js [3, 9-11]
 import * as React from "react";
@@ -66,7 +66,7 @@ ReactDOM.render(
 );
 ```
 
-Now you can use React Router anywhere in your app! For a simple example, open `src/App.js` and replace the default markup with some routes:
+现在，可以在应用程序中的任何位置使用 React Router！举个简单的例子，打开 `src/App.js` 将一些默认标记替换为路由：
 
 ```js [2, 8-12]
 import * as React from "react";
@@ -86,7 +86,7 @@ function App() {
 }
 ```
 
-Now, still in `src/App.js`, create your route components:
+现在，仍在 `src/App.js` 中，创建路由组件：
 
 ```js
 // App.js
@@ -122,9 +122,9 @@ function About() {
 }
 ```
 
-Go ahead and start your app by running `npm start`, and you should see the `Home` route when your app starts running. Click the "About" link to see your `<About>` route, and voilà! You've successfully set up React Router using Create React App! 🥳
+继续并通过运行 `npm start` 来启动应用, 当应用开始运行时，应会看到路由 `Home`。点击 "About"可以看到 `<About>` 路由的内容, 瞧！您已经成功通过使用 Create React App 安装了 React Router！ 🥳
 
-When it's time to deploy your app to production, be sure to follow [Create React App's instructions](https://create-react-app.dev/docs/deployment#serving-apps-with-client-side-routing) on deploying with React Router to be sure your server is configured correctly.
+当需要将应用部署到生产环境时，请务必按照  [Create React App 关于部署的文档介绍](https://create-react-app.dev/docs/deployment#serving-apps-with-client-side-routing)，以确保您的服务器配置正确。
 
 ## Parcel
 
