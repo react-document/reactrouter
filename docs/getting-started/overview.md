@@ -1,6 +1,6 @@
 ---
-标题: 命令
-概述: 2
+title: Overview
+order: 2
 ---
 
 # 概述
@@ -8,7 +8,7 @@
 如果您熟悉 JavaScript 生态系统、React 和 React Router，这可以作为 React Router v6 的快速概览，其中包含大量代码和最少的解释。
 
 - 有关 React Router 的完整介绍，请参阅 [教程](tutorial.md)
-- 有关每个 API 的大量文档，请参阅[API 参考](../api.md)
+- 有关每个 API 的大量文档，请参阅[ API 参考](../api.md)
 - 要更深入地了解概念，请参阅[主要概念](concepts.md)
 
 ## 安装
@@ -26,7 +26,7 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-// 也导入你的路由组件
+// 导入你的路由组件
 
 render(
   <BrowserRouter>
@@ -45,17 +45,17 @@ render(
 );
 ```
 
-在以前版本的 React Router 中，当多个路由匹配一个不明确的 URL 时，你必须以某种方式对你的路由进行排序才能得到正确的渲染。V6 更聪明，会选择最具体的匹配，所以你不必再担心了。：例如，URL `/teams/new` 匹配这两个路由:
+在以前版本的 React Router 中，当多个路由匹配一个不明确的 URL 时，你必须以某种方式对你的路由进行排序才能得到正确的渲染。V6更加智能，将选择最具体的匹配，因此您无需再担心这一点。例如，URL `/teams/new` 匹配这两个路由:
 
 ```jsx
 <Route path="teams/:teamId" element={<Team />} />
 <Route path="teams/new" element={<NewTeamForm />} />
 ```
 
-但是 `teams/new`是比`/teams/:teamId`更具体的匹配, 因此 `<NewTeamForm />` 将呈现。
+但是 `teams/new` 是比 `/teams/:teamId` 更具体的匹配, 因 `<NewTeamForm />` 将呈现。
 ## 导航
 
-使用 `Link`来让用户更改 URL 或者使用 `useNavigate`自己更改URL (如提交表单后):
+使用 `Link` 来让用户更改 URL 或者使用 `useNavigate` 自己更改URL (如提交表单后):
 
 ```tsx
 import { Link } from "react-router-dom";
@@ -95,7 +95,7 @@ function Invoices() {
 
 ## 读取 URL 参数
 
-在您的路由路径中使用 `:style` 语法和 `useParams()`来读取它们:
+在您的路由路径中使用 `:style` 语法和 `useParams()` 来读取它们:
 
 ```tsx
 import { Routes, Route, useParams } from "react-router-dom";
@@ -117,7 +117,7 @@ function Invoice() {
 }
 ```
 
-请注意，路径片段 `:invoiceId` 和参数的键`params.invoiceId`匹配。
+请注意，路径片段 `:invoiceId` 和参数的键 `params.invoiceId` 匹配。
 
 一个非常常见的用例是在组件呈现时获取数据：
 
@@ -138,7 +138,7 @@ function Invoice() {
 
 ## 嵌套路由
 
-这是 React Router 最强大的功能之一，因此您不必处理复杂的布局代码。您的绝大多数布局都与 URL 片段相耦合，React Router完全支持这一点。
+这是 React Router 最强大的功能之一，因此您不必处理复杂的布局代码。您的绝大多数布局都与 URL 片段相耦合，React Router 完全支持这一点。
 
 路由可以相互嵌套，它们的路径也将嵌套（子级继承父级）。
 
@@ -161,7 +161,7 @@ function App() {
 - `"/invoices/sent"`
 - `"/invoices/:invoiceId"`
 
-当 URL 为`"/invoices/sent"`时，此组件树将是：
+当 URL 为 `"/invoices/sent"` 时，此组件树将是：
 
 ```tsx
 <App>
@@ -171,7 +171,7 @@ function App() {
 </App>
 ```
 
-当 URL 为`"/invoices/123"`时，此组件树将是：
+当 URL 为 `"/invoices/123"` 时，此组件树将是：
 
 ```tsx
 <App>
@@ -265,7 +265,7 @@ function Dashboard() {
 
 ## 索引路由
 
-索引路由可以被认为是“默认子路由”。当父路由有多个子路由，但 URL 仅在父路由的路径上时，您可能需要将某些内容呈现到outlet中。
+索引路由可以被认为是“默认子路由”。当父路由有多个子路由，但 URL 仅在父路由的路径上时，您可能需要将某些内容呈现到 outlet 中。
 
 考虑一下这个例子：
 
@@ -293,7 +293,7 @@ function Layout() {
 }
 ```
 
-这个页面在“/invoices”和“/activity”上看起来很棒，但在“/”它只是一个空白页<main>因为那里没有子路由渲染。为此，我们可以添加一个索引路由：
+这个页面在 “/invoices” 和 “/activity” 上看起来很棒，但在 “/” 它只是一个空白页 <main> 因为那里没有子路由渲染。为此，我们可以添加一个索引路由：
 
 ```tsx [5]
 function App() {
@@ -309,7 +309,7 @@ function App() {
 }
 ```
 
-现在在“/”上<Activity>元素将在outlet内渲染。
+现在在 “/” 上 <Activity> 元素将在 outlet 内渲染。
 
 您可以在路由层次结构的任何级别拥有一个索引路由，当父级匹配但其他子级都不匹配时，该索引路由将呈现。
 
@@ -332,7 +332,7 @@ function App() {
 
 ## 相关链接
 
-相对的`<Link to>`值(不以'/'开头)是相对于呈现它们的路由的路径的。下面的两个链接将链接到`/dashboard/invoices`和`/dashboard/team`，因为它们是在`<Dashboard>`内部呈现的。 当您更改父级的 URL 或重新排列您的组件时，这非常好，因为您的所有链接都会自动更新。
+相对的 `<Link to>` 值(不以 '/' 开头)是相对于呈现它们的路由的路径的。下面的两个链接将链接到 `/dashboard/invoices` 和 `/dashboard/team`，因为它们是在 `<Dashboard>` 内部呈现的。 当您更改父级的 URL 或重新排列您的组件时，这非常好，因为您的所有链接都会自动更新。
 
 ```tsx
 import {
@@ -399,7 +399,7 @@ function App() {
 
 ## 多组路由
 
-尽管您在一个应用程序中只应该有一个`<Router>`，但您可以根据需要拥有任意数量的 [`<Routes>`](../api.md#routes)，无论您在哪里需要它们。每个 `<Routes>` 元素独立于其他元素运行，并选择一个子路由进行渲染。
+尽管您在一个应用程序中只应该有一个 `<Router>`，但您可以根据需要拥有任意数量的 [`<Routes>`](../api.md#routes)，无论您在哪里需要它们。每 `<Routes>` 元素独立于其他元素运行，并选择一个子路由进行渲染。
 
 ```tsx
 function App() {
@@ -435,7 +435,7 @@ function App() {
 
 ## 后代 `<Routes>`
 
-你可以在任何你需要的地方渲染[a `<Routes>` element](../api.md#routes)，包括在另一个`<Routes>`组件树的深处。 它们的工作方式与其他`<Routes>`一样，除了它们会在渲染它们的路由的路径上自动构建。如果你这样做，请确保在父路由的path_的末尾放一个\*。否则，当父路由的长度大于父路由的路径时，父路由将不会匹配该URL，而你的后代`<Routes>`将永远不会出现。
+你可以在任何你需要的地方渲染 [a `<Routes>` element](../api.md#routes)，包括在另一个 `<Routes>` 组件树的深处。 它们的工作方式与其他 `<Routes>` 一样，除了它们会在渲染它们的路由的路径上自动构建。如果你这样做，请确保在父路由的path_的末尾放一个 \*。否则，当父路由的长度大于父路由的路径时，父路由将不会匹配该URL，而你的后代 `<Routes>` 将永远不会出现。
 
 ```tsx [5]
 function App() {
@@ -460,4 +460,4 @@ function Dashboard() {
 }
 ```
 
-就这样！我们并没有涵盖这里的所有API，但这些绝对是您将要使用的最常见的API。如果您想了解更多信息，请继续阅读[我们的教程]（tutorial.md）或浏览[完整API参考]。
+就只写这么多吧，我们并没有涵盖这里的所有 API，但这些绝对是您将要使用的最常见的 API。如果您想学习更多相关知识，请继续阅读[我们的教程]（tutorial.md）或浏览[完整 API 参考]。
