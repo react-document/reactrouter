@@ -7,7 +7,7 @@ order: 1
 
 本文档将介绍在 React 生态系统中，利用各种工具来使用 React Router 的最常见方式。
 
-- [基本安装](#basic-installation)
+- [基本安装](#基本安装)
 - [Create React App](#create-react-app)
 - [Parcel](#parcel)
 - [Webpack](#webpack)
@@ -46,9 +46,9 @@ $ pnpm add react-router-dom@6
 
 ## Create React App
 
-按照 React [创建新的 React 应用](https://react.docschina.org/docs/create-a-new-react-app.html)的文档说明，并按照上面的[基本安装](#basic-installation)，在项目中安装 React Router。
+按照 React [创建新的 React 应用](https://react.docschina.org/docs/create-a-new-react-app.html)的文档说明，并按照上面的[基本安装](#基本安装)，在项目中安装 React Router。
 
-创建项目并将 React Router 作为依赖项安装后，请在代码编辑器中打开 `src/index.js` 。 在顶部导入 `react-router-dom` 中的 `BrowserRouter` 并将你的 App 组件包裹在 `<BrowserRouter>`标签中：
+当创建项目并将 React Router 作为依赖项安装后，请在代码编辑器中打开 `src/index.js` 。在顶部导入 `react-router-dom` 中的 `BrowserRouter` 并将你的 App 组件包裹在 `<BrowserRouter>`标签中：
 
 ```js [3, 9-11]
 import * as React from "react";
@@ -128,7 +128,7 @@ function About() {
 
 ## Parcel
 
-按照 [Parcel 文档](https://parceljs.org/getting_started.html)的说明创建项目，然后根据上面的[基本安装](#basic-installation)的说明，在项目中安装 React Router。
+按照 [Parcel 文档](https://parceljs.org/getting_started.html)的说明创建项目，然后根据上面的[基本安装](#基本安装)的说明，在项目中安装 React Router。
 
 在你的项目的 `package.json` 中的 scripts 命令中添加 `start` 脚本命令，以便在开发过程中可以在浏览器中打开项目
 
@@ -138,7 +138,7 @@ function About() {
 }
 ```
 
-创建项目并且安装完依赖项后，在你的项目的根目录下创建一个新文件叫 `.babelrc` ：
+当创建项目并且安装完依赖项后，在你的项目的根目录下创建一个新文件叫 `.babelrc` ：
 
 ```json
 {
@@ -163,7 +163,7 @@ ReactDOM.render(
 );
 ```
 
-在 `index.html` 中，在 script 标签上面的 body 标签内创建根 div ，并且提供 `noscript` 标签，有利于帮助不支持脚本或已禁用脚本的浏览器显示备选内容，除非你计划稍后进行服务端渲染。
+在 `index.html` 中的 script 标签上的 body 标签内创建根 div ，并且提供 `noscript` 标签，有利于帮助不支持脚本或已禁用脚本的浏览器显示备选内容，除非你计划稍后进行服务端渲染。
 
 ```html
 <body>
@@ -235,11 +235,11 @@ export default App;
 
 ## Webpack
 
-按照 [webpack 文档](https://webpack.js.org/guides/getting-started/)中的说明来创建一个新的项目, 然后按照上面的 [基本安装](#basic-installation)的说明在你的项目中安装 React Router。
+按照 [webpack 文档](https://webpack.js.org/guides/getting-started/)中的说明来创建一个新的项目, 然后按照上面的 [基本安装](#基本安装)的说明在你的项目中安装 React Router。
  
-在 webpack 中创建一个新的 React 项目比 Parcel 或 Create React App 更复杂一些。由于 webpack 是一个配置比较自由的工具，允许你根据自己的喜好微调构建，因此你可能需要阅读 [webpack 文档](https://webpack.js.org/)或查看[其他存储库中的  webpack 配置](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/config/webpack.config.js)以了解如何构建自己的项目。
+在 webpack 中创建一个新的 React 项目比 Parcel 或 Create React App 更复杂一些。由于 webpack 是一个配置比较自由的工具，允许你根据自己的喜好微调构建，因此你可能需要阅读 [webpack 文档](https://webpack.js.org/)或查看[其他仓库中的  webpack 配置](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/config/webpack.config.js)以了解如何构建自己的项目。
 
-在你代码的某个地方（可能是 React 组件树中的根组件），一旦你配置了 webpack 并安装了必要的依赖项, 你可以在  `react-router-dom` 中 进行 `import` 来获取所需的模块。
+在你代码的某个地方（例如在 React 组件树中的根组件），一旦你配置了 webpack 并安装了必要的依赖项, 你可以在  `react-router-dom` 中 进行 `import` 来获取所需的模块。
 
 ```js
 import {
