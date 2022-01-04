@@ -9,26 +9,26 @@ order: 1
 <docs-cards>
   <a href="v6/getting-started/tutorial" aria-label="New to React Router?">
     <docs-card>
-      <h3>React Router新手?</h3> 
-      <p>我们建议你从教程开始，包含快速起步和运行React Router你需要知道的一切。</p>
+      <h3>初识React Router?</h3> 
+      <p>建议从此教程起步。本教程可以让你快速入门React Router。</p>
     </docs-card>
   </a>
   <a href="v6/getting-started/overview" aria-label="Upgrading to v6?">
     <docs-card>
       <h3>熟悉React Router?</h3> 
-      <p>我们在v6引进了一些新特性和激动人心的改变，在这个让v6变得特别的特性的快速概述中，了解关于它们的所有信息。</p>
+      <p>在v6中，我们增加了一些新特性，同时做了一些激动人心的调整。在这个快速概览中，了解所有让v6变得与众不同的特性。</p>
     </docs-card>
   </a>
   <a href="v6/getting-started/concepts" aria-label="Upgrading to v6?">
     <docs-card>
-      <h3>想深入探索?</h3> 
-      <p>通过React Router和路由的概念、词汇和设计原则来加深你对React Router的理解，想要成为contributor的读者必读。</p>
+      <h3>想要深入探索?</h3> 
+      <p>此文全面提升你对React Router的理念、术语，以及常规路由和React Router的设计原则的理解，想要成为contributor的读者必读。</p>
     </docs-card>
   </a>
   <a href="v6/faq" aria-label="Frequently Asked Questions">
     <docs-card>
       <h3>常见问题</h3> 
-      <p>遇到问题了吗?很有可能，你不是第一个!探索一些人们通常对React Router v6有疑问的地方。</p>
+      <p>遇到难题了？可以在这里看看大家关于React Router v6的常见问题。</p>
     </docs-card>
   </a>
 </docs-cards>
