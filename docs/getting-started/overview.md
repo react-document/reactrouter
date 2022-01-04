@@ -1,23 +1,23 @@
 ---
-title: Overview
-order: 2
+标题: 命令
+概述: 2
 ---
 
-# Overview
+# 概述
 
-If you're familiar with the JavaScript ecosystem, React, and React Router, this serves as a quick overview of React Router v6 with lots of code and minimal explanations.
+如果您熟悉 JavaScript 生态系统、React 和 React Router，这可以作为 React Router v6 的快速概览，其中包含大量代码和最少的解释。
 
-- For a complete introduction to React Router, do the [Tutorial](tutorial.md)
-- For extensive documentation on every API, see [API Reference](../api.md)
-- For a deeper understanding of concepts, see [Main Concepts](concepts.md)
+- 有关 React Router 的完整介绍，请参阅 [教程](tutorial.md)
+- 有关每个 API 的大量文档，请参阅[API 参考](../api.md)
+- 要更深入地了解概念，请参阅[主要概念](concepts.md)
 
-## Installation
+## 安装
 
 ```sh
 npm install react-router-dom@6
 ```
 
-## Configuring Routes
+## 配置路由
 
 ```jsx
 import { render } from "react-dom";
@@ -26,7 +26,7 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-// import your route components too
+// 也导入你的路由组件
 
 render(
   <BrowserRouter>
@@ -45,18 +45,17 @@ render(
 );
 ```
 
-In previous versions of React Router you had to order your routes a certain way to get the right one to render when multiple routes matched an ambiguous URL. V6 is a lot smarter and will pick the most specific match so you don't have to worry about that anymore. For example, the URL `/teams/new` matches both of these route:
+在以前版本的 React Router 中，当多个路由匹配一个不明确的 URL 时，你必须以某种方式对你的路由进行排序才能得到正确的渲染。V6 更聪明，会选择最具体的匹配，所以你不必再担心了。：例如，URL `/teams/new` 匹配这两个路由:
 
 ```jsx
 <Route path="teams/:teamId" element={<Team />} />
 <Route path="teams/new" element={<NewTeamForm />} />
 ```
 
-But `teams/new` is a more specific match than `/teams/:teamId`, so `<NewTeamForm />` will render.
+但是 `teams/new`是比`/teams/:teamId`更具体的匹配, 因此 `<NewTeamForm />` 将呈现。
+## 导航
 
-## Navigation
-
-Use `Link` to let the user change the URL or `useNavigate` to do it yourself (like after form submissions):
+使用 `Link`来让用户更改 URL 或者使用 `useNavigate`自己更改URL (如提交表单后):
 
 ```tsx
 import { Link } from "react-router-dom";
@@ -94,9 +93,9 @@ function Invoices() {
 }
 ```
 
-## Reading URL Parameters
+## 读取 URL 参数
 
-Use `:style` syntax in your route path and `useParams()` to read them:
+在您的路由路径中使用 `:style` 语法和 `useParams()`来读取它们:
 
 ```tsx
 import { Routes, Route, useParams } from "react-router-dom";
@@ -118,9 +117,10 @@ function Invoice() {
 }
 ```
 
-Note that the path segment `:invoiceId` and the param's key `params.invoiceId` match up.
+请注意，路径片段 `:invoiceId` 和参数的键`params.invoiceId`匹配。
 
-A very common use-case is fetching data when the component renders:
+一个非常常见的用例是在组件呈现时获取数据：
+
 
 ```tsx
 function Invoice() {
@@ -136,11 +136,11 @@ function Invoice() {
 }
 ```
 
-## Nested Routes
+## 嵌套路由
 
-This is one of the most powerful features of React Router making it so you don't have to mess around with complicated layout code. The vast majority of your layouts are coupled to segments of the URL and React Router embraces this fully.
+这是 React Router 最强大的功能之一，因此您不必处理复杂的布局代码。您的绝大多数布局都与 URL 片段相耦合，React Router完全支持这一点。
 
-Routes can be nested inside one another, and their paths will nest too (child inheriting the parent).
+路由可以相互嵌套，它们的路径也将嵌套（子级继承父级）。
 
 ```tsx
 function App() {
@@ -155,13 +155,13 @@ function App() {
 }
 ```
 
-This route config defined three route paths:
+此路由配置定义了三个路由路径：
 
 - `"/invoices"`
 - `"/invoices/sent"`
 - `"/invoices/:invoiceId"`
 
-When the URL is `"/invoices/sent"` the component tree will be:
+当 URL 为`"/invoices/sent"`时，此组件树将是：
 
 ```tsx
 <App>
@@ -171,7 +171,7 @@ When the URL is `"/invoices/sent"` the component tree will be:
 </App>
 ```
 
-When the URL is `"/invoices/123"`, the component tree will:
+当 URL 为`"/invoices/123"`时，此组件树将是：
 
 ```tsx
 <App>
@@ -181,7 +181,7 @@ When the URL is `"/invoices/123"`, the component tree will:
 </App>
 ```
 
-Notice the inner component that changed with the URL (`<SentInvoices>` and `<Invoice>`). The parent route (`<Invoices>`) is responsible for making sure the matching child route is rendered with [`<Outlet>`](../api.md#outlet). Here's the full example:
+请注意随 URL 变化的内部组件 (`<SentInvoices>` 和 `<Invoice>`)。父路由 (`<Invoices>`) 负责确保匹配的子路由使用 [`<Outlet>`](../api.md#outlet)呈现。下面是完整的示例：
 
 ```tsx [18]
 import { Routes, Route, Outlet } from "react-router-dom";
@@ -216,9 +216,9 @@ function SentInvoices() {
 }
 ```
 
-The nested url segments map to nested component trees. This is perfect for creating UI that has persistent navigation in layouts with an inner section that changes with the URL. If you look around the web you'll notice many websites (and especially web apps) have multiple levels of layout nesting.
+嵌套的 URL 段映射到嵌套的组件树。这非常适合创建在布局中具有持久导航且内部部分随 URL 变化的 UI。如果您环顾网络，您会注意到许多网站（尤其是网络应用程序）具有多层布局嵌套。
 
-Here's another example of a root layout with navigation that persists while the inner page swaps out with the URL:
+下面是另一个带有导航的根布局示例，该导航在内部页面与 URL 交换时仍然存在：
 
 ```tsx
 import {
@@ -263,11 +263,11 @@ function Dashboard() {
 }
 ```
 
-## Index Routes
+## 索引路由
 
-Index routes can be thought of as "default child routes". When a parent route has multiple children, but the URL is just at the parent's path, you probably want to render something into the outlet.
+索引路由可以被认为是“默认子路由”。当父路由有多个子路由，但 URL 仅在父路由的路径上时，您可能需要将某些内容呈现到outlet中。
 
-Consider this example:
+考虑一下这个例子：
 
 ```tsx
 function App() {
@@ -293,7 +293,7 @@ function Layout() {
 }
 ```
 
-This page looks great at "/invoices" and "/activity", but at "/" it's just a blank page in `<main>` because there is no child route to render there. For this we can add an index route:
+这个页面在“/invoices”和“/activity”上看起来很棒，但在“/”它只是一个空白页<main>因为那里没有子路由渲染。为此，我们可以添加一个索引路由：
 
 ```tsx [5]
 function App() {
@@ -309,9 +309,9 @@ function App() {
 }
 ```
 
-Now at "/" the `<Activity>` element will render inside the outlet.
+现在在“/”上<Activity>元素将在outlet内渲染。
 
-You can have an index route at any level of the route hierarchy that will render when the parent matches but none of its other children do.
+您可以在路由层次结构的任何级别拥有一个索引路由，当父级匹配但其他子级都不匹配时，该索引路由将呈现。
 
 ```tsx
 function App() {
@@ -330,9 +330,9 @@ function App() {
 }
 ```
 
-## Relative Links
+## 相关链接
 
-Relative `<Link to>` values (that do not begin with a `/`) are relative to the path of the route that rendered them. The two links below will link to `/dashboard/invoices` and `/dashboard/team` because they're rendered inside of `<Dashboard>`. This is really nice when you change a parent's URL or re-arrange your components because all of your links automatically update.
+相对的`<Link to>`值(不以'/'开头)是相对于呈现它们的路由的路径的。下面的两个链接将链接到`/dashboard/invoices`和`/dashboard/team`，因为它们是在`<Dashboard>`内部呈现的。 当您更改父级的 URL 或重新排列您的组件时，这非常好，因为您的所有链接都会自动更新。
 
 ```tsx
 import {
@@ -381,9 +381,9 @@ function App() {
 }
 ```
 
-## "Not Found" Routes
+## “未找到”路由
 
-When no other route matches the URL, you can render a "not found" route using `path="*"`. This route will match any URL, but will have the weakest precedence so the router will only pick it if no other routes match.
+当没有其他路由与 URL 匹配时，您可以使用 `path="*"` 渲染“未找到”路由。此路由将匹配任何 URL，但具有最弱的优先级，因此路由器仅在没有其他路由匹配时才会选择它。
 
 ```tsx
 function App() {
@@ -397,9 +397,9 @@ function App() {
 }
 ```
 
-## Multiple Sets of Routes
+## 多组路由
 
-Although you should only ever have a single `<Router>` in an app, you may have as many [`<Routes>`](../api.md#routes) as you need, wherever you need them. Each `<Routes>` element operates independently of the others and picks a child route to render.
+尽管您在一个应用程序中只应该有一个`<Router>`，但您可以根据需要拥有任意数量的 [`<Routes>`](../api.md#routes)，无论您在哪里需要它们。每个 `<Routes>` 元素独立于其他元素运行，并选择一个子路由进行渲染。
 
 ```tsx
 function App() {
@@ -433,9 +433,9 @@ function App() {
 }
 ```
 
-## Descendant `<Routes>`
+## 后代 `<Routes>`
 
-You can render [a `<Routes>` element](../api.md#routes) anywhere you need one, including deep within the component tree of another `<Routes>`. These will work just the same as any other `<Routes>`, except they will automatically build on the path of the route that rendered them. If you do this, _make sure to put a \* at the end of the parent route's path_. Otherwise, the parent route won't match the URL when it is longer than the parent route's path, and your descendant `<Routes>` won't ever show up.
+你可以在任何你需要的地方渲染[a `<Routes>` element](../api.md#routes)，包括在另一个`<Routes>`组件树的深处。 它们的工作方式与其他`<Routes>`一样，除了它们会在渲染它们的路由的路径上自动构建。如果你这样做，请确保在父路由的path_的末尾放一个\*。否则，当父路由的长度大于父路由的路径时，父路由将不会匹配该URL，而你的后代`<Routes>`将永远不会出现。
 
 ```tsx [5]
 function App() {
@@ -460,4 +460,4 @@ function Dashboard() {
 }
 ```
 
-And that's just about it! We haven't covered every API here, but these are definitely the most common ones you'll use. If you'd like to learn more, go ahead and follow [our tutorial](tutorial.md) or browse [the full API reference](../api.md).
+就这样！我们并没有涵盖这里的所有API，但这些绝对是您将要使用的最常见的API。如果您想了解更多信息，请继续阅读[我们的教程]（tutorial.md）或浏览[完整API参考]。
