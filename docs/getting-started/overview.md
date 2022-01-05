@@ -52,7 +52,7 @@ render(
 <Route path="teams/new" element={<NewTeamForm />} />
 ```
 
-但是 `teams/new` 是比 `/teams/:teamId` 更具体的匹配, 因此 `<NewTeamForm />` 将呈现。
+因为 `teams/new` 是比 `/teams/:teamId` 更具体的匹配, 所以显示的组件是 `<NewTeamForm />` 。
 ## 导航
 
 使用 `Link` 来让用户更改 URL 或者使用 `useNavigate` 自己更改URL (如提交表单后):
