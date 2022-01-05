@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: 概述
 order: 2
 ---
 
@@ -45,14 +45,14 @@ render(
 );
 ```
 
-在以前版本的 React Router 中，当多个路由匹配一个不明确的 URL 时，你必须以某种方式对你的路由进行排序才能得到正确的渲染。V6更加智能，将选择最具体的匹配，因此您无需再担心这一点。例如，URL `/teams/new` 匹配这两个路由:
+在以前版本的 React Router 中，当多个路由匹配一个不明确的 URL 时，你必须以某种方式对你的路由进行排序才能得到正确的渲染。V6 更加智能，将选择最具体的匹配，因此您无需再担心这一点。例如，URL `/teams/new` 匹配这两个路由:
 
 ```jsx
 <Route path="teams/:teamId" element={<Team />} />
 <Route path="teams/new" element={<NewTeamForm />} />
 ```
 
-但是 `teams/new` 是比 `/teams/:teamId` 更具体的匹配, 因 `<NewTeamForm />` 将呈现。
+但是 `teams/new` 是比 `/teams/:teamId` 更具体的匹配, 因此 `<NewTeamForm />` 将呈现。
 ## 导航
 
 使用 `Link` 来让用户更改 URL 或者使用 `useNavigate` 自己更改URL (如提交表单后):
