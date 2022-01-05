@@ -16,7 +16,7 @@ order: 1
   <a href="v6/getting-started/overview" aria-label="Upgrading to v6?">
     <docs-card>
       <h3>熟悉 React Router?</h3> 
-      <p>在 v6 中，我们增加了一些新特性，同时做了一些激动人心的调整。在这个快速概览中，了解所有让 v6 变得与众不同的特性。</p>
+      <p>在v6中，我们增加了一些新特性，同时做了一些激动人心的调整。在这个快速概览中，了解所有让v6变得与众不同的特性。</p>
     </docs-card>
   </a>
   <a href="v6/getting-started/concepts" aria-label="Upgrading to v6?">
