@@ -1,4 +1,4 @@
 ---
-title: 样例
+title: 例子
 order: 6
 ---
