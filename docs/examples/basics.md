@@ -4,7 +4,7 @@ order: 1
 ---
 
 # 基础示例
-本例展示了React Router的部分基本特性，包括：       
+本例展示了 React Router 的部分基本特性，包括：       
 - 布局和嵌套`<Route>`
 - 索引`<Route>`
 - 全匹配`<Route>`
