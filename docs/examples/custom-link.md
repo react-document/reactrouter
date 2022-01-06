@@ -4,7 +4,7 @@ order: 4
 ---
 
 # 自定义链接样例
-本例展示了如何使用`useMatch()`和`useResolvedPath()`制作一个自定义`<Link>`组件去绘制不同的active链接。
+本例展示了如何使用useMatch()和useResolvedPath()来实现一个自定义<Link>组件。在这个自定义组件的链接被激活的时候，我们能够去绘制不同的内容。     
 
 # 预览
 在[StackBlitz](https://stackblitz.com/edit/github-5e8ihj?file=src/App.tsx)上看样例。
