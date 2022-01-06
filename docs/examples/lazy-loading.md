@@ -1,3 +1,8 @@
+---
+title: Installation
+order: 6
+---
+
 # 懒加载样例
 本例展示了懒加载：
 - 单个路由元素
