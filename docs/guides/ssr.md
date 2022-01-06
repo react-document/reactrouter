@@ -1,30 +1,30 @@
 ---
-title: Server-Side Rendering
+title: 服务端渲染
 toc: false
 order: 6
 ---
 
-# Server-Side Rendering
+# 服务端渲染(Server-Side Rendering)
 
-The most basic server rendering in React Router is pretty straightforward. However, there's a lot more to consider than just getting the right routes to render. Here's an incomplete list of things you'll need to handle:
+在最基本的服务端渲染中使用 React Router 是非常简单的。但是，你不能仅仅局限于能够渲染出正确的路由，还需要思考很多细节。以下列出了部分需要你去处理的事情：
 
-- Bundling your code for the server and the browser
-- Not bundling server-only code into the browser bundles
-- Code splitting that works on the server and in the browser
-- Server Side data loading so you actually have something to render
-- Data loading strategies that work on the client and server
-- Handling code splitting in the server and client
-- Proper HTTP status codes and redirects
-- Environment variables and secrets
-- Deployment
+- 分别打包服务端和客户端的代码
+- 不要将仅在服务端运行的代码打包到客户端代码中
+- 适用于服务端和客户端的代码分割(Code splitting)
+- 服务端数据加载，这样就可以渲染(render)一些内容
+- 适用于客服端和服务端的数据加载策略
+- 处理好在服务端和客户端的代码分割(Code splitting)
+- 正确的 HTTP 状态码和重定向
+- 环境变量和密钥
+- 部署
 
-Setting all of this up well can be pretty involved but is worth the performance and UX characteristics you can only get when server rendering.
+能够处理好上述几点是特别困难的。但是，冲着只有服务端渲染能够实现的卓越性能和用户体验，你做这些处理是值得的。
 
-If you want to server render your React Router app, we highly recommend you use [Remix](https://remix.run). This is another project of ours that's built on top of React Router and handles all of the things mentioned above and more. Give it a shot!
+如果你想在你的 React Router 应用中实现服务端渲染，我们强烈推荐你使用 [Remix](https://remix.run)。这是我们的另外一个项目，它是基于 React Router 创建的。它能够解决包括但不仅限于上述的所有问题。尝试一下！
 
-If you want to tackle it on your own, you'll need to use `<StaticRouter>` on the server.
+如果你想自己解决这个问题，你需要在服务端使用`<StaticRouter>`
 
-First you'll need some sort of "app" or "root" component that gets rendered on the server and in the browser:
+首先，你需要在服务端和客户端渲染一个类似“app”或者“root”的组件：
 
 ```js filename=App.js
 export default function App() {
@@ -45,7 +45,7 @@ export default function App() {
 }
 ```
 
-Here's a simple express server that renders the app on the server. Note the use of `StaticRouter`.
+服务端有一个用 express 实现的简单的服务器，它负责渲染我们的应用。注意在这里我们使用的是 `StaticRouter` 。
 
 ```js filename=server.entry.js
 import express from "express";
@@ -67,7 +67,7 @@ app.get("*", (req, res) => {
 app.listen(3000);
 ```
 
-And finally, you'll need a similar file to "hydrate" the app with your JavaScript bundle that includes the very same `App` component. Note the use of `BrowserRouter` instead of `StaticRouter`.
+最后，你需要在类似的 JavaScript 文件中引入同一个 `App` 组件，去“激活(hydrate)”你的应用。注意这里我们使用的是 `BrowserRouter` ，而不是`StaticRouter`
 
 ```js filename=client.entry.js
 import ReactDOM from "react-dom";
@@ -82,16 +82,16 @@ ReactDOM.hydrate(
 );
 ```
 
-The only real differences from the client entry are:
+`server.entry.js` 和 `client.entry.js` 真正的区别如下：
 
-- `StaticRouter` instead of `BrowserRouter`
-- passing the URL from the server to `<StaticRouter url>`
-- Using `ReactDOMServer.renderToString` instead of `ReactDOM.render`.
+- 使用的是 `StaticRouter`，而不是 `BrowserRouter`。
+- 把来自服务端的 URL 传递到 `<StaticRouter url>` 中。
+- 使用的是 `ReactDOMServer.renderToString`，而不是 `ReactDOM.render`。
 
-Some parts you'll need to do yourself for this to work:
+要使其正常运行，你需要自己完成以下部分：
 
-- How to bundle the code to work in the browser and server
-- How to know where the client entry is for `<script>` in the `<App>` component.
-- Figuring out data loading (especially for the `<title>`).
+- 分别打包运行在浏览器和服务端的代码。
+- 注意在 `<App>` 组件里，引入 client.entry.js 的 `<script>` 标签所在的位置。
+- 弄清数据加载（尤其是 `<title>` 标签的内容）。
 
-Again, we recommend you give [Remix](https://remix.run) a look. It's the best way to server render a React Router app--and perhaps the best way to build any React app 😉.
+我们再次推荐你看一下[Remix](https://remix.run)。它是在 React Router 应用中实现服务端渲染的最佳方式。说不定它也是构建任何 React 应用的最佳方式 😉。
