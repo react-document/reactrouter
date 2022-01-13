@@ -1,5 +1,5 @@
 ---
-title: Migrating from @reach/router
+title: 从@reach/router 迁移
 ---
 
 # 从 Reach Router 迁移到 React Router v6

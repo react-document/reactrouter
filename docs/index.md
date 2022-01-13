@@ -1,5 +1,5 @@
 ---
-title: Docs Home
+title: 文档主页
 toc: false
 order: 1
 ---
