@@ -1,83 +1,82 @@
 ---
-title: Main Concepts
+title: 主要概念
 order: 4
 ---
 
-# Main Concepts
+# 主要概念
 
-<docs-warning>This document is a deep dive into the core concepts behind routing as implemented in React Router. It's pretty long, so if you're looking for a more practical guide check out our [quick start tutorial](tutorial.md).</docs-warning>
+<docs-warning>本文档深入探讨了在 React Router 中路由实现的核心概念。全文较长，所以如果您正在寻找更实用的指南，请查看我们的 [快速入门教程](tutorial.md).</docs-warning>
 
-You might be wondering what exactly React Router does. How can it help you build your app? What exactly is a **router**, anyway?
+可能想知道 React Router 到底做了什么。它如何帮助您构建应用程序？ **路由** 到底是什么？
 
-If you've ever had any of these questions, or you'd just like to dig into the fundamental pieces of routing, you're in the right place. This document contains detailed explanations of all the core concepts behind routing as implemented in React Router.
+如果您也有碰到过这些问题，或者您只想深入了解路由的基本部分，那么您来对地方了。 本文档包含在 React Router 中实现的路由背后的所有核心概念的详细解释。
 
-Please don't let this document overwhelm you! For everyday use, React Router is pretty simple. You don't need to go this deep to use it.
+不要担心看不懂本文档！对于日常使用来说，React Router 非常简单。你并不需要深入学习。
 
-React Router isn't just about matching a url to a function or component: it's about building a full user interface that maps to the URL, so it might have more concepts in it than you're used to. We'll go into detail on the three main jobs of React Router:
+React Router 不仅仅是将 url 与函数或组件匹配：它是关于构建一个映射到 URL 的完整用户界面，因此它可能包含比您习惯的更多概念。我们将详细介绍 React Router 的三个主要功能：
 
-1. Subscribing and manipulating the [history stack](#history-stack)
-2. Matching the [URL](#url) to your [routes](#route-config)
-3. Rendering a nested UI from the [route matches](#matches)
+1. 订阅和操作 [history stack](#history-stack)
+2. 匹配 [URL](#url)  [routes](#route-config)
+3. 根据路由的匹配[route matches](#matches) 来构建用户界面
 
-## Definitions
+## 定义
 
-But first, some definitions! There are a lot of different ideas around routing from back and front end frameworks. Sometimes a word in one context might have different meaning than another.
+首先有一些定义，在前后端框架中有着不同的含义，有的时候一个词用在不同的上下文中也会有不同的含义。
 
-Here are some words we use a lot when we talk about React Router. The rest of this guide will go into more detail on each one.
+以下是我们在谈论 React Router 中的一些常用词。本指南的其余部分将详细介绍他们。
 
-- <a id="url">**URL**</a> - The URL in the address bar. A lot of people use the term "URL" and "route" interchangeably, but this is not a route in React Router, it's just a URL.
+- <a id="url">**URL**</a> - 地址栏中的 URl。 很多人把 "URL" and "route" 混用 , 但是在 React Router 中, URL 并不是路由，它只是一个 URL 。
 
-- <a id="location">**Location**</a> - This is a React Router specific object that is based on the built-in browser's `window.location` object. It represents "where the user is at". It's mostly an object representation of the URL but has a bit more to it than that.
+- <a id="location">**Location**</a> - 这是基于内置浏览器的 `window.location` 对象的 React Router 特定对象.它代表“用户在哪里”。它主要是 URL 的对象表示，但比这更多。
 
-- <a id="location-state">**Location State**</a> - A value that persists with a [location](#location) that isn't encoded in the [URL](#url). Much like hash or search params (data encoded in the URL), but stored invisibly in the browser's memory.
+- <a id="location-state">**Location State**</a> -与未在 [URL](#url) 中编码的 [location](#location) 保持一致的值。很像哈希或搜索参数（在 URL 中编码的数据），但不可见地存储在浏览器的内存中。
 
-- <a id="history-stack">**History Stack**</a> - As the user navigates, the browser keeps track of each [location](#location) in a stack. If you click and hold the back button in a browser you can see the browser's history stack right there.
+- <a id="history-stack">**History Stack**</a> - 当用户导航时，浏览器会跟踪堆栈中的每个 [location](#location)。如果您在浏览器中单击并按住后退按钮，您可以在那里看到浏览器的历史堆栈。
 
-- <a id="csr">**Client Side Routing (CSR)**</a> - A plain HTML document can link to other documents and the browser handles the [history stack](#history-stack) itself. Client Side Routing enables developers to manipulate the browser history stack without making a document request to the server.
+- <a id="csr">**Client Side Routing (CSR)**</a> - 一个纯 HTML 文档可以链接到其他文档，并且浏览器自己处理 [历史堆栈](#history-stack)。客户端路由使开发人员能够操作浏览器历史堆栈，而无需向服务器发出文档请求。
+- <a id="history-object">**History**</a> - 一个对象，它允许 React Router 订阅 [URL](#url) 中的更改，并提供 API 以编程方式操作浏览器 [历史堆栈](#history-stack)。
 
-- <a id="history-object">**History**</a> - An object that allows React Router to subscribe to changes in the [URL](#url) as well as providing APIs to manipulate the browser [history stack](#history-stack) programmatically.
+- <a id="history-action">**History Action**</a> - `POP`、`PUSH` 或 `REPLACE` 之一。由于这三个原因之一，用户可以到达 [URL](#url)。将新条目添加到历史堆栈时的推送（通常是链接单击或程序员强制导航）。替换类似，只是它替换堆栈上的当前条目而不是推送新条目。最后，当用户单击浏览器 chrome 中的后退或前进按钮时，会发生弹出
 
-- <a id="history-action">**History Action**</a> - One of `POP`, `PUSH`, or `REPLACE`. Users can arrive at a [URL](#url) for one of these three reasons. A push when a new entry is added to the history stack (typically a link click or the programmer forced a navigation). A replace is similar except it replaces the current entry on the stack instead of pushing a new one. Finally, a pop happens when the user clicks the back or forward buttons in the browser chrome.
+- <a id="segment">**Segment**</a> - `/` 字符之间的 [URL](#url) 或 [path pattern](#path-pattern) 的一部分。例如，“/users/123”有两个段。
 
-- <a id="segment">**Segment**</a> - The parts of a [URL](#url) or [path pattern](#path-pattern) between the `/` characters. For example, "/users/123" has two segments.
+- <a id="path-pattern">**Path Pattern**</a> - 这些看起来像 URL，但可以包含用于将 URL 匹配到路由的特殊字符，例如 **动态段** (`"/users/:userId"`) 或 **星段** (`"/docs/*"`) .它们不是 URL，它们是 React Router 将匹配的模式。
 
-- <a id="path-pattern">**Path Pattern**</a> - These look like URLs but can have special characters for matching URLs to routes, like **dynamic segments** (`"/users/:userId"`) or **star segments** (`"/docs/*"`). They aren't URLs, they're patterns that React Router will match.
+- <a id="dynamic-segment">**Dynamic Segment**</a> - 动态路径模式的一段，这意味着它可以匹配该段中的任何值。例如，模式`/users/:userId`将匹配像`/users/123`这样的URL
 
-- <a id="dynamic-segment">**Dynamic Segment**</a> - A segment of a path pattern that is dynamic, meaning it can match any values in the segment. For example the pattern `/users/:userId` will match URLs like `/users/123`
+- <a id="url-params">**URL Params**</a> - URL 中与 [动态段](#dynamic-segment) 匹配的解析值。
 
-- <a id="url-params">**URL Params**</a> - The parsed values from the URL that matched a [dynamic segment](#dynamic-segment).
+- <a id="router">**Router**</a> - 使所有其他组件和挂钩工作的有状态的顶级组件
 
-- <a id="router">**Router**</a> - Stateful, top-level component that makes all the other components and hooks work.
+- <a id="route-config">**Route Config**</a> - 一棵**路由对象**树，将针对当前位置进行排名和匹配（使用嵌套）以创建**路由匹配**的分支。
 
-- <a id="route-config">**Route Config**</a> - A tree of **routes objects** that will be ranked and matched (with nesting) against the current location to create a branch of **route matches**.
+- <a id="route">**Route**</a> - 一个对象或路由元素，通常具有 { path, element } 或 <Route path element> 的形状。路径是路径模式。当路径模式与当前 URL 匹配时，将呈现该元素。
 
-- <a id="route">**Route**</a> - An object or Route Element typically with a shape of `path, element(这里外面两侧要包裹花括号)` or `&lt;Route path element>`. The `path` is a path pattern. When the path pattern matches the current URL, the element will be rendered.
+- <a id="route-element">**Route Element**</a> - Or `&lt;Route>`. <Routes> 读取该元素的 props 以创建路由，否则什么也不做。
 
-- <a id="route-element">**Route Element**</a> - Or `&lt;Route>`. This element's props are read to create a [route](#route) by `&lt;Routes>`, but otherwise does nothing.
+- <a id="nested-routes">**Nested Routes**</a> - 因为路由可以有子路由，并且每个路由都定义了 [URL](#url) 到 [segments](#segment) 的一部分，所以单个 URL 可以匹配树的嵌套“分支”中的多个路由。这可以通过 [outlet](#outlet)、[relative links](#relative-links) 等实现自动布局嵌套。
 
-- <a id="nested-routes">**Nested Routes**</a> - Because routes can have children and each route defines a portion of the [URL](#url) through [segments](#segment), a single URL can match multiple routes in a nested "branch" of the tree. This enables automatic layout nesting through [outlet](#outlet), [relative links](#relative-links), and more.
+- <a id="relative-links">**Relative links**</a> - 不以 `/` 开头的链接将继承渲染它们的最近路径。这使得链接到更深层的 URL 变得容易，而无需知道和构建整个路径。
 
-- <a id="relative-links">**Relative links**</a> - Links that don't start with `/` will inherit the closest route in which they are rendered. This makes it easy to link to deeper URLs without having to know and build up the entire path.
+- <a id="match">**Match**</a> -当路由匹配 URL 时保存信息的对象，例如匹配的 [url params](#url-params) 和路径名。
 
-- <a id="match">**Match**</a> - An object that holds information when a route matches the URL, like the [url params](#url-params) and pathname that matched.
+- <a id="matches">**Matches**</a> - 与当前 [location](#location) 匹配的路由数组（或 [route config](#route-config) 的分支）。此结构启用 [嵌套路由](#nested-routes)。
 
-- <a id="matches">**Matches**</a> - An array of routes (or branch of the [route config](#route-config)) that matches the current [location](#location). This structure enables [nested routes](#nested-routes).
+- <a id="parent-route">**Parent Route**</a> - 带有子路由的路由
 
-- <a id="parent-route">**Parent Route**</a> - A route with child routes.
+- <a id="outlet">**Outlet**</a> -在一组 [matches](#match) 中呈现下一个匹配项的组件。
 
-- <a id="outlet">**Outlet**</a> - A component that renders the next match in a set of [matches](#match).
 
-- <a id="index-route">**Index Route**</a> - A child route with no path that renders in the parent's [outlet](#outlet) at the parent's [URL](#url).
+- <a id="index-route">**Index Route**</a> - 没有路径的子路由，在父 [URL](#url) 的父 [outlet](#outlet) 中呈现。
 
-- <a id="layout-route">**Layout Route**</a> - A **parent route** without a path, used exclusively for grouping child routes inside a specific layout.
-
+- <a id="layout-route">**Layout Route**</a> -没有路径的**父路由**，专门用于在特定布局内对子路由进行分组。
 ## History and Locations
 
-Before React Router can do anything, it has to be able to subscribe to changes in the browser [history stack](#history-stack).
+在 React Router 做任何事情之前，它必须能够订阅浏览器 [history stack](#history-stack) 中的更改。
 
-Browsers maintain their own history stack as the user navigates around. That's how the back and forward buttons can work. In a traditional website (HTML documents without JavaScript) the browser will make requests to the server every time the user clicks a link, submits a form, or clicks the back and forward buttons.
+当用户浏览时，浏览器维护自己的历史堆栈。这就是后退和前进按钮的工作方式。在传统网站（没有 JavaScript 的 HTML 文档）中，每次用户单击链接、提交表单或单击后退和前进按钮时，浏览器都会向服务器发出请求。
 
-For example, consider the user:
+例如，考虑用户：
 
 1. clicks a link to `/dashboard`
 2. clicks a link to `/accounts`
@@ -85,7 +84,7 @@ For example, consider the user:
 4. clicks the back button
 5. clicks a link to `/dashboard`
 
-The history stack will change as follows where **bold** entries denote the current [URL](#url):
+历史堆栈将更改如下，其中 **加粗** 的条目表示当前的 [URL](#url)：
 
 1. **`/dashboard`**
 2. `/dashboard`, **`/accounts`**
@@ -95,7 +94,7 @@ The history stack will change as follows where **bold** entries denote the curre
 
 ### History Object
 
-With **client side routing**, developers are able to manipulate the browser [history stack](#history-stack) programmatically. For example, we can write some code like this to change the [URL](#url) without the browsers default behavior of making a request to the server:
+借助**客户端路由**，开发人员能够以编程方式操作浏览器 [历史堆栈](#history-stack)。例如，我们可以编写一些这样的代码来更改 [URL](#url)，而不需要浏览器向服务器发出请求的默认行为
 
 ```jsx
 <a
@@ -109,11 +108,11 @@ With **client side routing**, developers are able to manipulate the browser [his
 />
 ```
 
-<docs-warning>For illustration only, don't use `window.history.pushState` directly in React Router</docs-warning>
+<docs-warning>这里仅做说明, 不要在 React Router 中直接使用 `window.history.pushState` </docs-warning>
 
-This code changes the [URL](#url) but doesn't do anything for the UI. We would need to write some more code that changed some state somewhere to get the UI to change to the contact page. The trouble is, the browser doesn't give us a way to "listen to the URL" and subscribe to changes like this.
+此代码更改 [URL](#url) 但不会对 UI 执行任何操作。 我们需要编写更多代码来更改某处的某些状态，来更改相关页面的 UI 。 问题是，浏览器没有给我们一种“监听 URL”和订阅这样的变化的方法。
 
-Well, that's not totally true. We can listen for changes to the URL via [pop](#history-actions) events:
+嗯，这并不完全正确。我们可以通过 [pop](#history-actions) 事件监听 URL 的变化
 
 ```jsx
 window.addEventListener("popstate", () => {
@@ -121,9 +120,9 @@ window.addEventListener("popstate", () => {
 });
 ```
 
-But that only fires when the user clicks the back or forward buttons. There is no event for when the programmer called `window.history.pushState` or `window.history.replaceState`.
+但这仅在用户单击后退或前进按钮时触发。当程序员调用`window.history.pushState`或`window.history.replaceState`时没有事件。
 
-That's where a React Router specific `history` object comes into play. It provides a way to "listen for [URL](#url)" changes whether the [history action](#history-actions) is **push**, **pop**, or **replace**.
+这就是 React Router 特定的“history”对象发挥作用的地方。 它提供了一种方法来“侦听 [URL](#url)”更改 [history action](#history-actions) 是 **push**、**pop** 还是 **replace**。
 
 ```js
 let history = createBrowserHistory();
@@ -133,11 +132,12 @@ history.listen((location, action) => {
 });
 ```
 
-Apps don't need to set up their own history objects--that's job of `<Router>`. It sets up one of these objects, subscribe to changes in the [history stack](#history-stack), and finally updates its state when the [URL](#url) changes. This causes the app to re-render and the correct UI to display. The only thing it needs to put on state is a `location`, everything else works from that single object.
+应用程序不需要设置自己的历史对象——这是`<Router>`的工作。 它设置这些对象之一，订阅[历史堆栈]（#history-stack）中的更改， 最后在 [URL](#url) 更改时更新其状态。 这会导致应用重新渲染并显示正确的 UI 。唯一需要做的事情就是在state 中放置一个 `location`，其他的都是从这个对象中获取的。
 
 ### Locations
 
-The browser has a location object on `window.location`. It tells you information about the [URL](#url) but also has some methods to change it:
+
+浏览器在 `window.location` 上有一个 location 对象。 这个对象上含有 [URL](#url) 的信息，和一些改变 url 的方法：
 
 ```js
 window.location.pathname; // /getting-started/concepts/
@@ -146,9 +146,10 @@ window.location.reload(); // force a refresh w/ the server
 // and a lot more
 ```
 
-<docs-warning>For illustration. You don't typically work with `window.location` in a React Router app</docs-warning>
+<docs-warning>用于说明。你通常不会在 React Router 应用程序中使用 `window.location`</docs-warning>
 
-Instead of using `window.location`, React Router has the concept of a [location](#location) that's patterned after `window.location` but is much simpler. It looks like this:
+React Router 具有自己的  [location](#location) 来代替 `window.location`，使用起来更加简单。如下：
+
 
 ```js
 {
@@ -160,29 +161,29 @@ Instead of using `window.location`, React Router has the concept of a [location]
 }
 ```
 
-The first three: `{ pathname, search, hash }` are exactly like `window.location`. If you just add up the three you'll get the [URL](#url) the user sees in the browser:
+前三个：`{ pathname, search, hash }` 与 `window.location` 完全一样。如果您将这三个相加，您将获得用户在浏览器中看到的 [URL](#url)：
 
 ```js
 location.pathname + location.search + location.hash;
 // /bbq/pig-pickins?campaign=instagram#menu
 ```
 
-The last two, `{ state, key }`, are React Router specific.
+最后两个，`{ state, key }`，是 React Router 特有的属性。
 
 **Location Pathname**
 
-This is the part of [URL](#url) after the origin, so for `https://example.com/teams/hotspurs` the pathname is `/teams/hostspurs`. This is the only part of the location that routes match against.
+Location Pathname 是 [URL](#url) 一个原始部分, 所以对于`https://example.com/teams/hotspurs`，路径名是`/teams/hostspurs`。这是路线匹配的位置的唯一部分。
 
 **Location Search**
 
-People use a lot of different terms for this part of the [URL](#url):
+人们对 [URL] 的这一部分使用了很多不同的术语(#url):
 
 - location search
 - search params
 - URL search params
 - query string
 
-In React Router we call it the "location search". However, location search is a serialized version of [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams). So sometimes we might call it "URL search params" as well.
+在 React Router 中，我们称之为 "location search"。 但是, location search 是 [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)的序列化版本。 所以有时我们也可以称它为 “URL search params”。
 
 ```js
 // given a location like this:
@@ -200,18 +201,16 @@ params.get("campaign"); // "instagram"
 params.get("popular"); // "true"
 params.toString(); // "campaign=instagram&popular=true",
 ```
-
-When being precise, refer to the serialized string version as "search" and the parsed version as "search params", but it's common to use the terms interchangeably when precision isn't important.
+精确时，将序列化的字符串版本称为“search”，将解析后的版本称为“search params”，但是当精度不重要时，通常可以互换使用这些术语。
 
 **Location Hash**
 
-Hashes in URLs indicate a scroll position _on the current page_. Before the `window.history.pushState` API was introduced, web developers did client side routing exclusively with the hash portion of the [URL](#url), it was the only part we could manipulate without making a new request to the server. However, today we can use it for its designed purpose.
+我们可以使用哈希表示当前页面的滚动位置。 在引入 `window.history.pushState` API 之前, Web 开发人员专门使用 [URL](#url) 的哈希部分进行客户端路由，这是我们唯一可以在不向服务器发出新请求的情况下操作的部分。但是，今天我们可以将其用于其设计目的。
 
 **Location State**
 
-You may have wondered why the `window.history.pushState()` API is called "push state". State? Aren't we just changing the [URL](#url)? Shouldn't it be `history.push`? Well, we weren't in the room when the API was designed, so we're not sure why "state" was the focus, but it is a cool feature of browsers nonetheless.
-
-Browsers let us persist information about a transition by passing a value to `pushState`. When the user clicks back, the value on `history.state` changes to whatever was "pushed" before.
+您可能想知道为什么 `window.history.pushState()` API 被称为  "push state". State? 我们不只是更改 [URL](#url) 吗？不应该是`history.push`吗？好吧，设计 API 时我们并不在房间里，所以我们不确定为什么“state”是焦点，但它仍然是浏览器的一个很酷的特性。
+浏览器让我们通过将值传递给`pushState`来保存有关转换的信息。当用户单击返回时，`history.state` 上的值会更改为之前“推送”的值。
 
 ```js
 window.history.pushState("look ma!", undefined, "/contact");
@@ -224,16 +223,17 @@ window.history.state; // "look ma!"
 
 <docs-warning>For illustration. You don't read `history.state` directly in React Router apps</docs-warning>
 
-React Router takes advantage of this browser feature, abstracts it a bit, and surfaces the values on the `location` instead of `history`.
+React Router 利用这个浏览器特性，将其抽象化，并在“location”而不是“history”上显示值。
 
-You can think about `location.state` just like `location.hash` or `location.search` except instead of putting the values in the [URL](#url) it's hidden--like a super secret piece of the URL only the programmer knows about.
 
-A couple of great use-cases for location state are:
+您可以像 `location.hash` 或 `location.search` 一样考虑`location.state`，除了将值放在 [URL](#url) 中之外，它是隐藏的——就像 URL 的超级秘密片段程序员知道。
 
-- Telling the next page where the user came from and branching the UI. The most popular implementation here is showing a record in a modal if the user clicked on an item in a grid view, but if they show up to the URL directly, show the record in its own layout (pinterest, old instagram).
-- Sending a partial record from a list to the next screen so it can render the partial data immediately and then fetching the rest of the data afterward.
+location state 几个很好的用例：
 
-You set location state in two ways: on `<Link>` or `navigate`:
+- 告诉下一页用户来自哪里并分支 UI。这里最流行的实现是如果用户单击网格视图中的项目，则在模式中显示记录，但如果他们直接显示到 URL，则在其自己的布局中显示记录（pinterest，旧 instagram）。
+- 将列表中的部分记录发送到下一个屏幕，以便它可以立即渲染部分数据，然后再获取其余数据。
+
+你可以通过两个方式设置 location state : 在 `<Link>` 或者 `navigate`上:
 
 ```jsx
 <Link to="/pins/123" state={{ fromDashboard: true }} />;
@@ -242,20 +242,20 @@ let navigate = useNavigate();
 navigate("/users/123", { state: partialUser });
 ```
 
-And on the next page you can access it with `useLocation`:
+在下一页你可以访问通过 `useLocation` 访问:
 
 ```jsx
 let location = useLocation();
 location.state;
 ```
 
-<docs-info>Location state values will get serialized, so something like `new Date()` will be turned into a string.</docs-info>
+<docs-info>Location state 的会被序列化, 所以像`new Date()`这样的值会被转化为一个字符串。</docs-info>
 
 **Location Key**
 
-Each location gets a unique key. This is useful for advanced cases like location-based scroll management, client side data caching, and more. Because each new location gets a unique key, you can build abstractions that store information in a plain object, `new Map()`, or even `locationStorage`.
+每一个 location 会有唯一的Key。 这对于基于位置的滚动管理、客户端数据缓存等高级案例很有用。因为每个新位置都有一个唯一的键，所以您可以构建将信息存储在普通对象、`new Map()` 甚至`locationStorage` 中的抽象。
 
-For example, a very basic client side data cache could store values by location key (and the fetch [URL](#url)) and skip fetching the data when the user clicks back into it:
+例如，一个非常基本的客户端数据缓存可以通过位置键（和 fetch [URL](#url)）存储值，并在用户点击返回时跳过获取数据：
 
 ```jsx
 let cache = new Map();
@@ -300,7 +300,7 @@ function useFakeFetch(URL) {
 
 ## Matching
 
-On the initial render, and when the [history stack](#history-stack) changes, React Router will match the [location](#location) against your [route config](#route-config) to come up with a set of [matches](#match) to render.
+在初始渲染时，当 [history stack](#history-stack) 发生变化时，React Router 会将 [location](#location) 与您的 [route config](#route-config) 进行匹配以得出一个集合的 [matches](#match) 进行渲染。
 
 ### Defining Routes
 
@@ -325,7 +325,7 @@ A route config is a tree of [routes](#route) that looks something like this:
 </Routes>
 ```
 
-The `<Routes>` component recurses through its `props.children`, strips their props, and generates an object like this:
+`<Routes>` 组件通过它的 `props.children` 进行递归，剥离它们的 props，并生成一个像这样的对象：
 
 ```js
 let routes = [
@@ -381,17 +381,17 @@ let routes = [
 ];
 ```
 
-In fact, instead of `<Routes>` you can use the hook `useRoutes(routesGoHere)` instead. That's all `<Routes>` is doing.
+事实上，你可以使用钩子 `useRoutes(routesGoHere)` 来代替 `<Routes>`。这就是 `<Routes>` 所做的一切。
 
-As you can see, routes can define multiple [segments](#segment) like `:teamId/edit`, or just one like `:teamId`. All of the segments down a branch of the [route config](#route-config) are added together to create a final [path pattern](#path-pattern) for a route.
+如您所见，路由可以定义多个 [segments](#segment)，如 `:teamId/edit`，或仅定义一个，如 `:teamId`。 [route config](#route-config) 的分支下的所有段被添加在一起，以创建最终的 [path pattern](#path-pattern) 路线。
 
 ### Match Params
 
-Note the `:teamId` segments. This is what we call a [dynamic segment](#dynamic-segment) of the [path pattern](#path-pattern), meaning it doesn't match the URL statically (the actual characters) but it matches it dynamically. Any value can fill in for `:teamId`. Both `/teams/123` or `/teams/cupcakes` will match. We call the parsed values [URL params](#url-params). So in this case our `teamId` param would be `"123"` or `"cupcakes"`. We'll see how to use them in your app in the [Rendering](#rendering) section.
+注意 `:teamId` 段。这就是我们所说的 [路径模式](#path-pattern) 的 [动态段](#dynamic-segment)，这意味着它不静态匹配 URL（实际字符），但它动态匹配它。 `:teamId` 可以填写任何值。 `/teams/123` 或 `/teams/cupcakes` 都将匹配。我们将解析后的值称为 [URL 参数](#url-params)。所以在这种情况下，我们的 `teamId` 参数将是 `"123"` 或 `"cupcakes"`。我们将在 [Rendering](#rendering) 部分了解如何在您的应用中使用它们。
 
 ### Ranking Routes
 
-If we add up all the segments of all the branches of our [route config](#route-config), we end up with the following path patterns that our app responds to:
+如果我们将 [route config](#route-config) 的所有分支的所有段相加，我们最终会得到我们的应用程序响应的以下路径模式：
 
 ```js
 [
@@ -406,18 +406,18 @@ If we add up all the segments of all the branches of our [route config](#route-c
 ];
 ```
 
-Now this is where things get really interesting. Consider the [URL](#url) `/teams/new`. Which pattern in that list matches the URL?
+现在这是事情变得非常有趣的地方。考虑 [URL](#url) `/teams/new`。该列表中的哪个模式与 URL 匹配？
 
-That's right, two of them!
+没错，就是两个！
 
 ```
 /teams/new
 /teams/:teamId
 ```
 
-React Router has to make a decision here, there can be only one. Many routers, both client side and server side, will simply process the patterns in the order in which they were defined. First to match wins. In this case we would match `/` and render the `<Home/>` component. Definitely not what we wanted. These kinds of routers require us to order our routes perfectly to get the expected result. This is how React Router has worked up until v6, but now it's much smarter.
+React Router 必须在这里做出决定，只能有一个。许多路由器，包括客户端和服务器端，将简单地按照定义的顺序处理模式。最先匹配的获胜。在这种情况下，我们将匹配 `/` 并渲染 `<Home/>` 组件。绝对不是我们想要的。这些类型的路由器要求我们完美地排序我们的路由以获得预期的结果。这就是 React Router 在 v6 之前的工作方式，但现在它更智能了。
 
-Looking at those patterns, you intuitively know that we want `/teams/new` to match the URL `/teams/new`. It's a perfect match! React Router also knows that. When matching, it will rank your routes according the number of segments, static segments, dynamic segments, star patterns, etc. and pick the most specific match. You'll never have to think about ordering your routes.
+查看这些模式，您直观地知道我们希望 `/teams/new` 匹配 URL `/teams/new`。这是一个完美的匹配！ React Router 也知道这一点。匹配时，它会根据路段数、静态路段、动态路段、星形模式等对您的路线进行排名，并选择最具体的匹配项。您永远不必考虑订购路线。
 
 ### Pathless Routes
 
@@ -429,11 +429,11 @@ You may have noticed the weird routes from earlier:
 <Route element={<PageLayout />} />
 ```
 
-They don't even have a path, how can they be a route? This is where the word "route" in React Router is used pretty loosely. `<Home/>` and `<LeagueStandings/>` are [index routes](#index-route) and `<PageLayout/>` is a [layout route](#layout-route). We'll discuss how they work in the [Rendering](#rendering) section. Neither really has much to do with matching.
+连路都没有，怎么可能是路？这就是 React Router 中“路由”一词的使用非常松散的地方。 `<Home/>` 和 `<LeagueStandings/>` 是 [index routes](#index-route) 并且 `<PageLayout/>` 是 [layout route](#layout-route)。我们将在 [Rendering](#rendering) 部分讨论它们是如何工作的。两者都与匹配没有太大关系。
 
 ### Route Matches
 
-When a route matches the URL, it's represented by a [match](#match) object. A match for `<Route path=":teamId" element={<Team/>}/>` would look something like this:
+当路由匹配 URL 时，它由 [match](#match) 对象表示。 `<Route path=":teamId" element={<Team/>}/>` 的匹配项如下所示：
 
 ```js
 {
@@ -448,9 +448,9 @@ When a route matches the URL, it's represented by a [match](#match) object. A ma
 }
 ```
 
-`pathname` holds the portion of the URL that matched this route (in our case it's all of it). `params` holds the parsed values from any [dynamic segments](#dynamic-segment) that matched. Note that the param's object keys map directly to the name of the segment: `:teamId` becomes `params.teamId`.
+`pathname` 保存与该路由匹配的 URL 部分（在我们的例子中就是全部）。 `params` 保存来自任何匹配的 [动态段](#dynamic-segment) 的解析值。请注意，参数的对象键直接映射到段的名称：`:teamId` 变为 `params.teamId`。
 
-Because our routes are a tree, a single URL can match an entire branch of the tree. Consider the URL `/teams/firebirds`, it would be the following route branch:
+因为我们的路由是一棵树，所以单个 URL 可以匹配树的整个分支。考虑 URL `/teams/firebirds`，它将是以下路由分支：
 
 ```jsx [2,4,5]
 <Routes>
@@ -471,7 +471,8 @@ Because our routes are a tree, a single URL can match an entire branch of the tr
 </Routes>
 ```
 
-React Router will create an array of [matches](#match) from these routes and the url so it can render a nested UI that matches the route nesting.
+
+React Router 将根据这些路由和 url 创建一个 [matches](#match) 数组，以便它可以呈现与路由嵌套匹配的嵌套 UI。
 
 ```js
 [
@@ -506,7 +507,8 @@ React Router will create an array of [matches](#match) from these routes and the
 
 ## Rendering
 
-The final concept is rendering. Consider that the entry to your app looks like this:
+
+最后一个概念是渲染。考虑到您的应用程序的条目如下所示：
 
 ```jsx
 ReactDOM.render(
@@ -531,7 +533,7 @@ ReactDOM.render(
 );
 ```
 
-Let's use the `/teams/firebirds` URL as an example again. `<Routes>` will match the [location](#location) to your [route config](#route-config), get a set of [matches](#match), and then render a React element tree like this:
+让我们再次使用 `/teams/firebirds` URL 作为示例。`<Routes>` 会将 [location](#location) 匹配到你的 [route config](#route-config)，得到一组 [matches](#match)，然后像这样渲染一个 React 元素树：
 
 ```jsx
 <App>
@@ -541,11 +543,11 @@ Let's use the `/teams/firebirds` URL as an example again. `<Routes>` will match 
 </App>
 ```
 
-Each match rendered inside the parent route's element is a really powerful abstraction. Most websites and apps share this characteristic: boxes inside of boxes inside of boxes, each with a navigation section that changes a child section of the page.
+在父路由元素内渲染的每个匹配都是一个非常强大的抽象。 大多数网站和应用程序都具有此特征: 层层嵌套, 每个都有一个导航部分，可以更改页面的子部分。
 
 ### Outlets
 
-This nested element tree won't happen automatically. `<Routes>` will render the first match's element for you (In our case that's `<App/>`). The next match's element is `<Teams>`. In order to render that, `App` needs to render an [outlet](#outlet).
+这个嵌套的元素树不会自动发生。 `<Routes>` 将为你呈现第一个匹配的元素（在我们的例子中是`<App/>`）。下一场比赛的元素是`<Teams>`。为了渲染它，`App` 需要渲染一个 [outlet](#outlet)。
 
 ```jsx [5]
 function App() {
@@ -559,17 +561,17 @@ function App() {
 }
 ```
 
-The `Outlet` component will always render the next match. That means `<Teams>` also needs an outlet to render `<Team/>`.
+`Outlet` 组件将始终呈现下一个匹配项。这意味着`<Teams>` 也需要一个 outlet 来渲染`<Team/>`。
 
-If the URL were `/contact-us`, the element tree would change to:
+如果 URL 是 `/contact-us`，则元素树将更改为：
 
 ```jsx
 <ContactForm />
 ```
 
-Because the contact form is not under the main `<App>` route.
+因为联系表单不在主`<App>` 路由下。
 
-If the URL were `/teams/firebirds/edit`, the element tree would change to:
+如果 URL 是 `/teams/firebirds/edit`，则元素树将更改为：
 
 ```jsx
 <App>
@@ -579,11 +581,13 @@ If the URL were `/teams/firebirds/edit`, the element tree would change to:
 </App>
 ```
 
-The outlet swaps out the child for the new child that matches, but the parent layout persists. It's subtle but very effective at cleaning up your components.
+插座将子路由替换为匹配的新的子路由，但父路由布局仍然存在。这很微妙，但在清理组件方面非常有效。
+
 
 ### Index Routes
 
 Remember the [route config](#route-config) for `/teams`:
+记住`/teams`的[路由配置](#route-config)：
 
 ```js
 <Route path="teams" element={<Teams />}>
@@ -593,7 +597,7 @@ Remember the [route config](#route-config) for `/teams`:
 </Route>
 ```
 
-If the URL were `/teams/firebirds`, the element tree would be:
+如果 URL 是 `/teams/firebirds`，元素树将是：
 
 ```jsx
 <App>
@@ -603,7 +607,7 @@ If the URL were `/teams/firebirds`, the element tree would be:
 </App>
 ```
 
-But if the URL were `/teams`, the element tree would be:
+但是如果 URL 是 `/teams`，元素树将是：
 
 ```jsx
 <App>
@@ -613,9 +617,9 @@ But if the URL were `/teams`, the element tree would be:
 </App>
 ```
 
-League standings? How the heck did `<Route index element={<LeagueStandings>}/>` pop in there? It doesn't even have a path! The reason is that it's an [index route](#index-route). Index routes render in their parent route's [outlet](#outlet) at the parent route's path.
+联赛积分榜？ `<Route index element={<LeagueStandings>}/>` 到底是怎么出现的？连路都没有！原因是它是 [index route](#index-route)。索引路由在其父路由路径的 [outlet](#outlet) 中呈现。
 
-Think of it this way, if you're not at one of the child routes' paths, the `<Outlet>` will render nothing in the UI:
+这样想，如果你不在子路由的路径之一，`<Outlet>` 将不会在 UI 中呈现任何内容
 
 ```jsx
 <App>
@@ -623,15 +627,19 @@ Think of it this way, if you're not at one of the child routes' paths, the `<Out
 </App>
 ```
 
-If all the teams are in a list on the left then an empty outlet means you've got a blank page on the right! Your UI needs something to fill the space: index routes to the rescue.
+如果所有团队都在左侧的列表中，那么空出口意味着您在右侧有一个空白页面！你的 UI 需要一些东西来填补空间：索引路线来救援。
 
-Another way to think of an index route is that it's the default child route when the parent matches but none of its children do.
+考虑索引路由的另一种方式是，当父路由匹配但其子路由都不匹配时，它是默认子路由。
 
-Depending on the user interface, you might not need an index route, but if there is any sort of persistent navigation in the parent route you'll most likely want index route to fill the space when the user hasn't clicked one of the items yet.
+考虑索引路由的另一种方式是，当父路由匹配但其子路由都不匹配时，它是默认子路由。
+
+根据用户界面，您可能不需要索引路由，但如果父路由中有任何类型的持久导航，您很可能希望索引路由在用户未单击其中一项时填充空间然而。
 
 ### Layout Routes
 
-Here's a part of our route config we haven't matched yet: `/privacy`. Let's look at the route config again, highlighting the matched routes:
+
+这是我们尚未匹配的路由配置的一部分：`/privacy`。让我们再次查看路由配置，突出显示匹配的路由
+
 
 ```jsx [2,11,12]
 <Routes>
@@ -652,7 +660,7 @@ Here's a part of our route config we haven't matched yet: `/privacy`. Let's look
 </Routes>
 ```
 
-And the resulting element tree rendered will be:
+渲染的结果元素树将是：
 
 ```jsx
 <App>
@@ -662,9 +670,9 @@ And the resulting element tree rendered will be:
 </App>
 ```
 
-The `PageLayout` route is admittedly weird. We call it a [layout route](#layout-route) because it doesn't participate in the matching at all (though its children do). It only exists to make wrapping multiple child routes in the same layout simpler. If we didn't allow this then you'd have to handle layouts in two different ways: sometimes your routes do it for you, sometimes you do it manually with lots of layout component repetition throughout your app:
+`PageLayout` 路由确实很奇怪。我们称它为 [layout route](#layout-route) 因为它根本不参与匹配（尽管它的子节点参与）。它的存在只是为了使在同一布局中包装多个子路由更简单。如果我们不允许这样做，那么您必须以两种不同的方式处理布局：有时您的路线会为您完成，有时您需要手动完成，并在整个应用程序中重复大量布局组件。
 
-<docs-error>You can do it like this, but we recommend using a layout route</docs-error>
+<docs-error>您可以这样做，但我们建议使用布局路线</docs-error>
 
 ```jsx bad lines=[14-16,22-24]
 <Routes>
@@ -697,25 +705,30 @@ The `PageLayout` route is admittedly weird. We call it a [layout route](#layout-
 </Routes>
 ```
 
-So, yeah, the semantics of a layout "route" is a bit silly since it has nothing to do with the URL matching, but it's just too convenient to disallow.
+所以，是的，布局“路由”的语义有点傻，因为它与 URL 匹配无关，但它太方便了，不能禁止。
+
+所以，是的，布局“路由”的语义有点愚蠢，因为它与 URL 匹配无关，但它太方便了，无法禁止
 
 ## Navigating
 
-When the [URL](#url) changes we call that a "navigation". There are two ways to navigate in React Router:
+当 [URL](#url) 改变时，我们称之为 “navigation”。在 React Router 中有两种导航方式：
 
 - `<Link>`
 - `navigate`
 
 ### Link
 
-This is the primary means of navigation. Rendering a `<Link>` allows the user to change the URL when they click it. React Router will prevent the browser's default behavior and tell the [history](#history) to push a new entry into the [history stack](#history-stack). The [location](#location) changes and the new [matches](#match) will render.
 
-However, links are accessible in that they:
+这是导航的主要方式。渲染一个 `<Link>` 允许用户在点击它时更改 URL。 React Router 将阻止浏览器的默认行为，并告诉 [history](#history) 将新条目推送到 [history stack](#history-stack)。 [location](#location) 更改，新的 [matches](#match) 将呈现。
 
-- Still render a `<a href>` so all default accessibility concerns are met (like keyboard, focusability, SEO, etc.)
-- Don't prevent the browser's default behavior if it's a right click or command/control click to "open in new tab"
+但是，链接是可访问的，因为它们：
 
-[Nested routes](#nested-routes) aren't just about rendering layouts; they also enable "relative links". Consider our `teams` route from before:
+
+- 仍然呈现 `<a href>` 以便满足所有默认的可访问性问题（如键盘、可聚焦性、SEO 等）
+- 如果右键单击或命令/控制单击以“在新选项卡中打开”，请不要阻止浏览器的默认行为。
+
+- 如果是右键单击或命令/控制单击以“在新选项卡中打开”，则不要阻止浏览器的默认行为
+[嵌套路由](#nested-routes) 不仅仅是渲染布局；它们还启用“相对链接”。考虑我们之前的 `teams` 路线
 
 ```jsx
 <Route path="teams" element={<Teams />}>
@@ -730,11 +743,13 @@ The `<Teams>` component can render links like:
 <Link to="new" />
 ```
 
-The full path it links to will be `/teams/psg` and `/teams/new`. They inherit the route within which they are rendered. This makes it so your route components don't have to really know anything about the rest of the routes in the app. A very large amount of links just go one more [segment](#segment) deeper. You can rearrange your whole [route config](#route-config) and these links will likely still work just fine. This is very valuable when building out a site in the beginning and the designs and layouts are shifting around.
+它链接到的完整路径将是 `/teams/psg` 和 `/teams/new`。它们继承了渲染它们的路线。这使得您的路由组件不必真正了解应用程序中的其余路由。大量的链接只会更深入 [segment](#segment)。您可以重新排列整个 [route config](#route-config)，这些链接可能仍然可以正常工作。在开始构建站点并且设计和布局正在发生变化时，这非常有价值。
 
 ### Navigate Function
 
-This function is returned from the `useNavigate` hook and allows you, the programmer, to change the URL whenever you want. You could do it on a timeout:
+这个函数是从 `useNavigate` 钩子返回的，它允许程序员随时更改 URL。您可以在超时时执行此操作：
+
+从 `useNavigate` 钩子返回返回一个函数，使用这个函数可以更改 URL。您可以在定时器里面执行此函数：
 
 ```js
 let navigate = useNavigate();
@@ -745,7 +760,7 @@ useEffect(() => {
 }, []);
 ```
 
-Or after a form is submitted:
+或者在提交表单后：
 
 ```js
 <form onSubmit={event => {
@@ -762,17 +777,19 @@ Like `Link`, `navigate` works with nested "to" values as well.
 navigate("psg");
 ```
 
-You should have a good reason to use `navigate` instead of `<Link>`. This makes us very sad:
+您应该有充分的理由使用 `navigate` 而不是 `<Link>`。这让我们非常难过
 
 ```js bad nonumber
 <li onClick={() => navigate("/somewhere")} />
 ```
 
-Aside from links and forms, very few interactions should change the URL because it introduces complexity around accessibility and user expectations.
+除了链接和表单之外，很少有交互会改变 URL，因为它引入了可访问性和用户期望的复杂性。
 
-## Data Access
+除了链接和表单之外，很少有交互应该更改 URL，因为它引入了围绕可访问性和用户期望的复杂性。
 
-Finally, an application is going to want to ask React Router for a few pieces of information in order to build out the full UI. For this, React Router has a pile of hooks
+## 数据访问
+
+最后，应用程序需要向 React Router 请求一些信息以构建完整的 UI。为此，React Router 有一堆钩子
 
 ```js
 let location = useLocation();
@@ -782,9 +799,9 @@ let [urlSearchParams] = useSearchParams();
 
 ## Review
 
-Let's put it all together from the top!
+让我们从头开始把它放在一起！
 
-1. You render your app:
+1. 渲染你的应用（App）
 
    ```jsx
    ReactDOM.render(
@@ -809,20 +826,23 @@ Let's put it all together from the top!
    );
    ```
 
-2. `<BrowserRouter>` creates a [history](#history), puts the initial [location](#location) in to state, and subscribes to the [URL](#url).
+2. `<BrowserRouter>` 创建一个 [history](#history)，将初始的 [location](#location) 放入 state，并订阅 [URL](#url)。
 
-3. `<Routes>` recurses it's [child routes](#child-route) to build a [route config](#route-config), matches those routes against the [location](#location), creates some route [matches](#match), and renders the first match's route element.
+3. `<Routes>` 递归它的 [子路由](#child-route) 以构建 [路由配置](#route-config)，将这些路由与 [location](#location) 匹配，创建一些路由 [matches] (#match)，并呈现第一个匹配的路由元素
 
-4. You render an [`<Outlet/>`](#outlet) in each [parent route](#parent-route).
+4. 您在每个 [父路由](#parent-route) 中渲染一个 [`<Outlet/>`](#outlet)。
 
 5. The outlets render the next match in the route [matches](#match).
 
-6. The user clicks a link
+6. 用户点击链接
 
-7. The link calls `navigate()`
+7. 链接调用 `navigate()`
 
-8. The [history](#history) changes the URL and notifies `<BrowserRouter>`.
+8. [history](#history) 更改 URL 并通知 `<BrowserRouter>`。
 
 9. `<BrowserRouter>` rerenders, start over at (2)!
 
-That's it! We hope this guide has helped you gain a deeper understanding of the main concepts in React Router.
+而已！我们希望本指南能帮助您更深入地了解 React Router 中的主要概念。
+
+
+
