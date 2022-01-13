@@ -1,21 +1,21 @@
 ---
-title: Installation
+title: 安装
 order: 1
 ---
 
-# Installation
+# 安装
 
-This document describes the most common ways people use React Router with various tools in the React Ecosystem.
+本文档将介绍在 React 生态系统中，利用各种工具来使用 React Router 的最常见方式。
 
-- [Basic Installation](#basic-installation)
+- [基本安装](#基本安装)
 - [Create React App](#create-react-app)
 - [Parcel](#parcel)
 - [Webpack](#webpack)
 - [HTML Script Tags](#html-script-tags)
 
-## Basic Installation
+## 基本安装
 
-Most modern React projects manage their dependencies using a package manager like [npm](https://www.npmjs.com/) or [Yarn](https://yarnpkg.com/). To add React Router to an existing project, the first thing you should do is install the necessary dependencies with the tool of your choice:
+现在大多数 React 项目使用[ npm ](https://www.npmjs.com/)或[ Yarn ](https://yarnpkg.com/)等包管理器来管理它们的依赖关系。要将 React Router 添加到现有项目中，你应该做的第一件事就是使用你选择的打包工具，来安装必要的依赖项：
 
 <details>
 <summary>npm</summary>
@@ -46,9 +46,9 @@ $ pnpm add react-router-dom@6
 
 ## Create React App
 
-Follow the instructions in the [React documentation to set up a new project with Create React App](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app), then follow [the installation instructions above](#basic-installation) to install React Router in your project.
+按照 React [创建新的 React 应用](https://react.docschina.org/docs/create-a-new-react-app.html)的文档说明，并按照上面的[基本安装](#基本安装)，在项目中安装 React Router。
 
-Once your project is set up and React Router is installed as a dependency, open the `src/index.js` in your text editor. Import `BrowserRouter` from `react-router-dom` near the top of your file and wrap your app in a `<BrowserRouter>`:
+当创建项目并将 React Router 作为依赖项安装后，请在代码编辑器中打开 `src/index.js` 。在顶部导入 `react-router-dom` 中的 `BrowserRouter` 并将你的 App 组件包裹在 `<BrowserRouter>`标签中：
 
 ```js [3, 9-11]
 import * as React from "react";
@@ -66,7 +66,7 @@ ReactDOM.render(
 );
 ```
 
-Now you can use React Router anywhere in your app! For a simple example, open `src/App.js` and replace the default markup with some routes:
+现在，可以在应用程序中的任何位置使用 React Router ！举个简单的例子，打开 `src/App.js` 并将一些默认标记替换为路由的方式：
 
 ```js [2, 8-12]
 import * as React from "react";
@@ -86,7 +86,7 @@ function App() {
 }
 ```
 
-Now, still in `src/App.js`, create your route components:
+现在，仍在 `src/App.js` 中，创建路由组件：
 
 ```js
 // App.js
@@ -122,15 +122,15 @@ function About() {
 }
 ```
 
-Go ahead and start your app by running `npm start`, and you should see the `Home` route when your app starts running. Click the "About" link to see your `<About>` route, and voilà! You've successfully set up React Router using Create React App! 🥳
+继续并通过运行 `npm start` 命令来启动应用，当应用开始运行时，可以看到 `Home` 路由的内容。点击 "About" 可以看到 `About` 路由的内容，瞧！你已经成功通过使用 Create React App 安装了 React Router！ 🥳
 
-When it's time to deploy your app to production, be sure to follow [Create React App's instructions](https://create-react-app.dev/docs/deployment#serving-apps-with-client-side-routing) on deploying with React Router to be sure your server is configured correctly.
+当需要将应用部署到生产环境时，请务必按照 [Create React App 关于部署的文档介绍](https://create-react-app.dev/docs/deployment#serving-apps-with-client-side-routing)，以确保你的服务器配置正确。
 
 ## Parcel
 
-Follow the instructions in the [Parcel documentation to set up a new project](https://parceljs.org/getting_started.html), then follow [the installation instructions above](#basic-installation) to install React Router in your project.
+按照 [Parcel 文档](https://parceljs.org/getting_started.html)的说明创建项目，然后根据上面的[基本安装](#基本安装)的说明，在项目中安装 React Router。
 
-In your project's `package.json`, add a `start` script so you can open your project in a browser during development.
+在你的项目的 `package.json` 中的 scripts 命令中添加 `start` 脚本命令，以便在开发过程中可以在浏览器中打开项目
 
 ```json [2]
 "scripts": {
@@ -138,7 +138,7 @@ In your project's `package.json`, add a `start` script so you can open your proj
 }
 ```
 
-Once the project is set up and your dependencies are installed, create a new `.babelrc` file at the root of your project:
+当创建项目并且安装完依赖项后，在你的项目的根目录下创建一个新文件叫 `.babelrc` ：
 
 ```json
 {
@@ -146,7 +146,7 @@ Once the project is set up and your dependencies are installed, create a new `.b
 }
 ```
 
-Go to the `index.js` file in your project and import the necessary functions from `react`, `react-dom`, and `react-router-dom` and mount a React app in a `div` with the ID of `root`:
+打开你的项目中的 `index.js` 并且从 `react` 、 `react-dom` 和 `react-router-dom` 中导入必要的函数，然后在 ID 为 `root` 的 `div` 上挂载 React 应用:
 
 ```js
 // index.js
@@ -163,7 +163,7 @@ ReactDOM.render(
 );
 ```
 
-In your `index.html`, create the root div in the document body above the script tag. It's also helpful to provide a `noscript` fallback message for users who may have disabled JavaScript, unless you plan on server-rendering your app later.
+在 `index.html` 中的 script 标签上的 body 标签内创建根 div ，并且提供 `noscript` 标签，有利于帮助不支持脚本或已禁用脚本的浏览器显示备选内容，除非你计划稍后进行服务端渲染。
 
 ```html
 <body>
@@ -176,7 +176,7 @@ In your `index.html`, create the root div in the document body above the script 
 </body>
 ```
 
-Now that React and React Router are set up create a new file `App.js` and add some routes and components:
+现在 React 和 React Router 已经安装好了，创建一个新文件叫 `App.js` ，并添加一些路由和组件：
 
 ```js
 // App.js
@@ -231,15 +231,15 @@ function About() {
 export default App;
 ```
 
-Now start your app by running `npm start`, and you should see the `Home` route when your app starts running. Click the "About" link to see your `About` route, and voilà! You successfully set up React Router using Parcel! 🥳
+现在，通过运行 `npm start` 命令来启动应用, 并且当应用开始运行时，可以看到 `Home` 路由的内容。点击 "About" 链接来查看 `About` 路由的内容，瞧！你已成功使用 Parcel 来创建 React Router！🥳
 
 ## Webpack
 
-Follow the instructions in the [webpack documentation to set up a new project](https://webpack.js.org/guides/getting-started/), then follow [the installation instructions above](#basic-installation) to install React Router in your project.
+按照 [webpack 文档](https://webpack.js.org/guides/getting-started/)中的说明来创建一个新的项目, 然后按照上面的 [基本安装](#基本安装)的说明在你的项目中安装 React Router。
+ 
+在 webpack 中创建一个新的 React 项目比 Parcel 或 Create React App 更复杂一些。由于 webpack 是一个配置比较自由的工具，允许你根据自己的喜好微调构建，因此你可能需要阅读 [webpack 文档](https://webpack.js.org/)或查看[其他仓库中的  webpack 配置](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/config/webpack.config.js)以了解如何构建自己的项目。
 
-Setting up a new React project in webpack is a bit more involved than Parcel or Create React App. Because webpack is a low-level tool that allows you to fine-tune your build to your liking, you may want to read the [webpack documentation](https://webpack.js.org/) or check out [webpack configurations in other repos](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/config/webpack.config.js) to understand how to build your own.
-
-Once you have webpack configured and the necessary dependencies installed, somewhere in your code (probably towards the root of your React component tree) you can `import` the modules you need from `react-router-dom`.
+在你代码的某个地方（例如在 React 组件树中的根组件），一旦你配置了 webpack 并安装了必要的依赖项, 你可以在  `react-router-dom` 中 进行 `import` 来获取所需的模块。
 
 ```js
 import {
@@ -264,7 +264,7 @@ function App() {
 
 ## HTML Script Tags
 
-One of the quickest ways to add React and React Router to a website is to use good ol' `<script>` tags and global variables. React Router is compatible with React 16.8+. Just add the following `<script>` tags to your HTML, just before the closing `</body>` tag:
+使用 `<script>` 标签和全局变量是将 React 和 React Router 添加到网站的最快方法之一。 React Router 与 React 16.8+ 相互兼容。只需在闭合标签 `</body>` 之前，将 `<script>` 添加到 HTML 中:
 
 ```html
   <!-- Other HTML for your app goes here -->
@@ -311,9 +311,10 @@ One of the quickest ways to add React and React Router to a website is to use go
 </body>
 ```
 
-Although this method is a nice way to get up and running quickly, it does load some code that you may not make use of in your app. React Router is designed as a collection of many small components and functions that allow you to use as little of the library as you actually need.
+尽管此方法是快速启动和运行的好方法，但它有可能会加载了一些你没有在应用程序中使用的代码。
+React Router 被设计为许多小组件和函数的集合，允许你根据自己的实际需要去使用尽可能少的库。
 
-In order to do this, you'll need to build your website with a JavaScript bundler like [Webpack](#webpack) or [Parcel](#parcel). The rest of the installation methods on this page describe how to get started using these tools.
+为了做到这一点，你需要使用像[ Webpack ](#webpack) 或者[ Parcel ](#parcel)这样的 JavaScript 模块打包器来构建你的网站。本页上的其他安装方法介绍的是如何开始使用这些工具。
 
 <!--
 ## React Native
