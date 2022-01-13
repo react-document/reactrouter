@@ -37,7 +37,7 @@ function withRouter(Component) {
 
 ## 为什么 `<Route>` 有一个叫 `element` 的属性，而不是叫 `render` 或者 `component`？
 
-其实我们之前在这里回答过这个问题 [从 v5 到 v6 的迁移指南](../guides/migrating-5-to-6#advantages-of-route-element), 但是我们需要在这里重复说明下.
+其实我们之前在这里回答过这个问题 从 v5 到 v6 的迁移指南, 但是我们需要在这里重复说明下.
 
 在 React Router v6 里，我们从 v5 的 `<Route component>` 和 `<Route render>` 这个两个API切换为 `<Route element>`。为什么我们要这样做呢?
 
@@ -116,7 +116,7 @@ function DeepComponent() {
 // 终于！我们完成了。
 ```
 
-在 v6 中使用 `element` 属性还有个重要的原因就是，我们保留了 `<Route children>` 给嵌套路由使用。如果你想要阅读更多相关知识，你可以浏览 v6 的 [入门教程](quick-start#nested-routes)
+在 v6 中使用 `element` 属性还有个重要的原因就是，我们保留了 `<Route children>` 给嵌套路由使用。如果你想要阅读更多相关知识，你可以浏览 v6 的 入门教程
 
 ## 我要如何在 react-router  v6 中添加一个 No Match(404) 的路由呢？
 

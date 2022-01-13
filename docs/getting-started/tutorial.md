@@ -841,4 +841,4 @@ export default function Invoice() {
 
 Congrats! You're all done with this tutorial. We hope it helped you get your bearings with React Router.
 
-If you're having trouble, check out the [Resources](/resources) page to get help. Good luck!
+If you're having trouble, check out the Resources page to get help. Good luck!
