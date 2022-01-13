@@ -1,78 +1,78 @@
 ---
-title: API Reference
+title: API 参考
 order: 2
 ---
 
-# API Reference
+# API 参考
 
-React Router is a collection of [React components](https://reactjs.org/docs/components-and-props.html), [hooks](https://reactjs.org/docs/hooks-intro.html) and utilities that make it easy to build multi-page applications with [React](https://reactjs.org). This reference contains the function signatures and return types of the various interfaces in React Router.
+React Router 是 [React components](https://reactjs.org/docs/components-and-props.html)、[hooks](https://reactjs.org/docs/hooks-intro.html) 和一些其他实用程序的集合，可搭配 [React](https://reactjs.org) 轻松构建多页面应用程序，此参考包含 React Router 中各种接口（interfaces）的函数签名和返回类型。
 
-## Overview
+## 概述
 
-### Packages
+### 依赖包
 
-React Router is published to npm in three different packages:
+React Router 在 npm 发布三个不同的包：
 
-- [`react-router`](https://npm.im/react-router) contains most of the core functionality of React Router including the route matching algorithm and most of the core components and hooks
-- [`react-router-dom`](https://npm.im/react-router-dom) includes everything from `react-router` and adds a few DOM-specific APIs, including [`<BrowserRouter>`](#browserrouter), [`<HashRouter>`](#hashrouter), and [`<Link>`](#link)
-- [`react-router-native`](https://npm.im/react-router-native) includes everything from `react-router` and adds a few APIs that are specific to React Native, including [`<NativeRouter>`](#nativerouter) and [a native version of `<Link>`](#link-react-native)
+- [`react-router`](https://npm.im/react-router) 包含 React Router 的大部分核心功能，包括路由匹配算法以及大部分核心组件和hooks
+- [`react-router-dom`](https://npm.im/react-router-dom) 包括 `react-router` 的所有内容，并添加了一些特定于 DOM 的 API，包括 [`<BrowserRouter>`](#browserrouter)，[`<HashRouter>`](#hashrouter) 和 [`<Link>`](#link)
+- [`react-router-native`](https://npm.im/react-router-native) 包括 `react-router` 的所有内容，并添加了一些特定于 React Native 的 API，包括 [`<NativeRouter>`](#nativerouter) 和 [`<Link>` 的原生版本](#link-react-native)
 
-Both `react-router-dom` and `react-router-native` automatically include `react-router` as a dependency when you install them, and both packages re-export everything from `react-router`. **When you `import` stuff, you should always import from either `react-router-dom` or `react-router-native` and never directly from `react-router`**. Otherwise you may accidentally import mismatched versions of the library in your app.
+`react-router-dom` 和 `react-router-native` 在安装时都会自动包含 `react-router` 作为依赖，并且都从 `react-router` 重新 export 所有内容。当 import 时，总是 import from `react-router-dom` 或 `react-router-native` 而非直接 import from `react-router`，否则可能会意外在应用中 import 不匹配版本的库（library）。
 
-If you [installed](./getting-started/installation.md) React Router as a global (using a `<script>` tag), you can find the library on the `window.ReactRouterDOM` object. If you installed it from npm, you can [`import`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) the pieces you need. The examples in this reference all use `import` syntax.
+如果[安装](./getting-started/installation.md) React Router 以在全局使用（使用 `<script>` 标签），可以在 `window.ReactRouterDOM` 对象上找到该库。如果从 npm 安装，则可以 import 需要的部分。本参考中的示例均使用 `import` 语法。
 
-### Setup
+### 构建
 
-To get React Router working in your app, you need to render a router element at or near the root of your element tree. We provide several different routers depending on where your app is running.
+为了让 React Router 在应用中工作，需要在 element tree 的根部或附近渲染（render）一个 router 元素。 依据应用运行的位置，以下提供几种不同的routers：
 
-- [`<BrowserRouter>`](#browserrouter) or [`<HashRouter>`](#hashrouter) should be used when running in a web browser (which one you pick depends on the style of URL you prefer or need)
-- [`<StaticRouter>`](#staticrouter) should be used when server-rendering a website
-- [`<NativeRouter>`](#nativerouter) should be used in [React Native](https://reactnative.dev/) apps
-- [`<MemoryRouter>`](#memoryrouter) is useful in testing scenarios and as a reference implementation for the other routers
+- 在 Web 浏览器中运行时使用 [`<BrowserRouter>`](#browserrouter) 或 [`<HashRouter>`](#hashrouter)（根据个人偏好或需要的 URL 样式选择）
+- 在服务器端渲染（server-rendering）网站时使用 [`<StaticRouter>`](#staticrouter)
+- 在 [React Native](https://reactnative.dev/) 应用中使用 [`<NativeRouter>`](#nativerouter)
+- [`<MemoryRouter>`](#memoryrouter) 在测试场景中较实用，也可以作为其他routers的参考实现
 
-These routers provide the context that React Router needs to operate in a particular environment. Each one renders [a `<Router>`](#router) internally, which you may also do if you need more fine-grained control for some reason. But it is highly likely that one of the built-in routers is what you need.
+这些 routers 提供了 React Router 在特定环境中运行所需的条件。每个 router 都在内部渲染[一个 `<Router>`](#router)，如需更细粒度的控制也可以这样做。但大概率只需使用上述内置 routers 中的一个。
 
-### Routing
+### 路由
 
-Routing is the process of deciding which React elements will be rendered on a given page of your app, and how they will be nested. React Router provides two interfaces for declaring your routes.
+路由是决定哪些 React 元素将在应用程序给定页面上渲染和如何嵌套的过程，React Router 提供了两个接口来声明路由。
 
-- [`<Routes>` and `<Route>`](#routes-and-route) if you're using JSX
-- [`useRoutes`](#useroutes) if you'd prefer a JavaScript object-based config
+- [`<Routes>` 和 `<Route>`](#routes-and-route) 使用 JSX 时
+- [`useRoutes`](#useroutes) 如果更喜欢基于 JavaScript 对象的路由配置
 
-A few low-level pieces that we use internally are also exposed as public API, in case you need to build your own higher-level interfaces for some reason.
+内部一些底层 API 也暴露为公共 API，用于根据需要构建自己的高级接口。
 
-- [`matchPath`](#matchpath) - matches a path pattern against a URL pathname
-- [`matchRoutes`](#matchroutes) - matches a set of routes against a [location](#location)
-- [`createRoutesFromChildren`](#createroutesfromchildren) - creates a route config from a set of React elements (i.e. [`<Route>`](#routes-and-route) elements)
+- [`matchPath`](#matchpath) - 匹配路径模式（path pattern）与 URL pathname
+- [`matchRoutes`](#matchroutes) - 根据 [location](#location) 匹配一组路由
+- [`createRoutesFromChildren`](#createroutesfromchildren) - 从一组 React 元素（即 [`<Route>`](#routes-and-route) 元素）创建路由配置
 
-### Navigation
+### 导航
 
-React Router's navigation interfaces let you change the currently rendered page by modifying the current [location](#location). There are two main interfaces for navigating between pages in your app, depending on what you need.
+React Router 的导航接口可通过修改当前 [location](#location) 来改变当前渲染的页面，有两个主要接口可按需在应用程序页面之间导航。
 
-- [`<Link>`](#link) and [`<NavLink>`](#navlink) render an accessible `<a>` element, or a `TouchableHighlight` on React Native. This lets the user initiate navigation by clicking or tapping an element on the page.
-- [`useNavigate`](#usenavigate) and [`<Navigate>`](#navigate) let you programmatically navigate, usually in an event handler or in response to some change in state
+- [`<Link>`](#link) 和 [`<NavLink>`](#navlink) 渲染可访问的 `<a>` 标签或在 React Native 上渲染可访问的 `TouchableHighlight`，让用户可以通过点击页面上的元素来导航。
+- [`useNavigate`](#usenavigate) 和 [`<Navigate>`](#navigate) 以编程方式导航，通常在event handler中或响应某些状态变化时使用
 
-There are a few low-level APIs that we use internally that may also prove useful when building your own navigation interfaces.
+内部一些底层 API也可用于构建自己的导航接口。
 
-- [`useResolvedPath`](#useresolvedpath) - resolves a relative path against the current [location](#location)
-- [`useHref`](#usehref) - resolves a relative path suitable for use as a `<a href>`
-- [`useLocation`](#uselocation) and [`useNavigationType`](#usenavigationtype) - these describe the current [location](#location) and how we got there
-- [`useLinkClickHandler`](#uselinkclickhandler) - returns an event handler to for navigation when building a custom `<Link>` in `react-router-dom`
-- [`useLinkPressHandler`](#uselinkpresshandler) - returns an event handler to for navigation when building a custom `<Link>` in `react-router-native`
-- [`resolvePath`](#resolvepath) - resolves a relative path against a given URL pathname
+- [`useResolvedPath`](#useresolvedpath) - 解析当前 [location](#location) 的相对路径
+- [`useHref`](#usehref) - 解析适合用作 `<a href>` 的相对路径
+- [`useLocation`](#uselocation) 和 [`useNavigationType`](#usenavigationtype) - 描述了当前 [location](#location) 以及如何导航到该 location
+- [`useLinkClickHandler`](#uselinkclickhandler) - 在 `react-router-dom` 中构建自定义 `<Link>` 时返回（return）用于导航的 event handler
+- [`useLinkPressHandler`](#uselinkpresshandler) - 在 `react-router-native` 中构建自定义 `<Link>` 时返回用于导航的 event handler
+- [`resolvePath`](#resolvepath) - 根据给定的 URL pathname 解析相对路径
 
-### Search Parameters
+### 搜索参数
 
-Access to the URL [search parameters](https://developer.mozilla.org/en-US/docs/Web/API/URL/searchParams) is provided via [the `useSearchParams` hook](#usesearchparams).
+通过 [`useSearchParams`](#usesearchparams) hook 提供对 URL [search parameters](https://developer.mozilla.org/en-US/docs/Web/API/URL/searchParams) 的访问。
 
 ---
 
-## Reference
+## 参考
 
 ### `<BrowserRouter>`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function BrowserRouter(
@@ -88,9 +88,9 @@ interface BrowserRouterProps {
 
 </details>
 
-`<BrowserRouter>` is the recommended interface for running React Router in a web browser. A `<BrowserRouter>` stores the current location in the browser's address bar using clean URLs and navigates using the browser's built-in history stack.
+`<BrowserRouter>` 是在 Web 浏览器中运行 React Router 的推荐接口，`<BrowserRouter>` 使用干净的（clean） URL 将当前 location 存储在浏览器的地址栏中，并使用浏览器的内置 history 堆栈进行导航。
 
-`<BrowserRouter window>` defaults to using the current [document's `defaultView`](https://developer.mozilla.org/en-US/docs/Web/API/Document/defaultView), but it may also be used to track changes to another window's URL, in an `<iframe>`, for example.
+`<BrowserRouter window>` 默认使用当前[文档的 `defaultView`](https://developer.mozilla.org/en-US/docs/Web/API/Document/defaultView)，也可用于跟踪对另一个窗口 URL 的更改，例如在 `<iframe>` 中。
 
 ```tsx
 import * as React from "react";
@@ -99,7 +99,7 @@ import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
   <BrowserRouter>
-    {/* The rest of your app goes here */}
+    {/* app的其余部分在这里 */}
   </BrowserRouter>,
   root
 );
@@ -108,7 +108,7 @@ ReactDOM.render(
 ### `<HashRouter>`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function HashRouter(
@@ -124,9 +124,9 @@ interface HashRouterProps {
 
 </details>
 
-`<HashRouter>` is for use in web browsers when the URL should not (or cannot) be sent to the server for some reason. This may happen in some shared hosting scenarios where you do not have full control over the server. In these situations, `<HashRouter>` makes it possible to store the current location in the `hash` portion of the current URL, so it is never sent to the server.
+`<HashRouter>` 用于 Web 浏览器 URL 由于某种原因不应（或不能）发送到服务器时，比如在某些无法完全控制服务器的共享托管方案中。 这些情况下当前 location 可以被 `<HashRouter>` 存储在当前 URL 的 `hash` 中，因此永远不会被发送到服务器。
 
-`<HashRouter window>` defaults to using the current [document's `defaultView`](https://developer.mozilla.org/en-US/docs/Web/API/Document/defaultView), but it may also be used to track changes to another window's URL, in an `<iframe>`, for example.
+`<HashRouter window>` 默认使用当前[文档的 `defaultView`](https://developer.mozilla.org/en-US/docs/Web/API/Document/defaultView)，也可用于跟踪对另一个窗口 URL 的更改，例如在 `<iframe>` 中。
 
 ```tsx
 import * as React from "react";
@@ -135,18 +135,18 @@ import { HashRouter } from "react-router-dom";
 
 ReactDOM.render(
   <HashRouter>
-    {/* The rest of your app goes here */}
+    {/* app的其余部分在这里 */}
   </HashRouter>,
   root
 );
 ```
 
-<docs-warning>We strongly recommend you do not use `HashRouter` unless you absolutely have to.</docs-warning>
+<docs-warning>强烈建议不要使用`HashRouter`，除非必须。</docs-warning>
 
 ### `<NativeRouter>`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function NativeRouter(
@@ -158,10 +158,10 @@ interface NativeRouterProps extends MemoryRouterProps {}
 
 </details>
 
-`<NativeRouter>` is the recommended interface for running React Router in a [React Native](https://reactnative.dev) app.
+`<NativeRouter>` 是在 [React Native](https://reactnative.dev) 应用中运行 React Router 的推荐接口。
 
-- `<NativeRouter initialEntries>` defaults to `["/"]` (a single entry at the root `/` URL)
-- `<NativeRouter initialIndex>` defaults to the last index of `initialEntries`
+- `<NativeRouter initialEntries>` 默认为 `["/"]`（根 `/` URL 中的单个入口）
+- `<NativeRouter initialIndex>` 默认为 `initialEntries` 的最后一个索引（index）
 
 ```tsx
 import * as React from "react";
@@ -170,7 +170,7 @@ import { NativeRouter } from "react-router-native";
 function App() {
   return (
     <NativeRouter>
-      {/* The rest of your app goes here */}
+      {/* app的其余部分在这里 */}
     </NativeRouter>
   );
 }
@@ -179,7 +179,7 @@ function App() {
 ### `<MemoryRouter>`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function MemoryRouter(
@@ -196,16 +196,15 @@ interface MemoryRouterProps {
 
 </details>
 
-A `<MemoryRouter>` stores its locations internally in an array. Unlike `<BrowserHistory>` and `<HashHistory>`, it isn't tied to an external source, like the history stack in a browser. This makes it ideal for scenarios where you need complete control over the history stack, like testing.
+`<MemoryRouter>` 在内部将其 location 存储在一个数组中。 不同于 `<BrowserHistory>` 和 `<HashHistory>` ，它不绑定到外部源如浏览器中的 history 堆栈，所以非常适合需要完全控制 history 堆栈的场景如测试。
 
-- `<MemoryRouter initialEntries>` defaults to `["/"]` (a single entry at the root `/` URL)
-- `<MemoryRouter initialIndex>` defaults to the last index of `initialEntries`
+- `<MemoryRouter initialEntries>` 默认为 `["/"]`（根 `/` URL 处的单个入口）
+- `<MemoryRouter initialIndex>` 默认为 `initialEntries` 的最后一个索引
 
-> **Tip:**
+> **提示：**
 >
-> Most of React Router's tests are written using a `<MemoryRouter>` as the
-> source of truth, so you can see some great examples of using it by just
-> [browsing through our tests](https://github.com/remix-run/react-router/tree/main/packages/react-router/__tests__).
+> 大多数 React Router 的测试都是使用 `<MemoryRouter>` 作为
+> 事实来源，可以[浏览我们的测试](https://github.com/remix-run/react-router/tree/main/packages/react-router/__tests__)查看一些很好的示例。
 
 ```tsx
 import * as React from "react";
@@ -235,13 +234,12 @@ describe("My app", () => {
 
 ### `<Link>`
 
-> **Note:**
+> **注意：**
 >
-> This is the web version of `<Link>`. For the React Native version,
-> [go here](#link-react-native).
+> 这是 `<Link>` 的 web 版，React Native 版[去这里](#link-react-native)。
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function Link(props: LinkProps): React.ReactElement;
@@ -262,7 +260,7 @@ type To = Partial<Location> | string;
 
 </details>
 
-A `<Link>` is an element that lets the user navigate to another page by clicking or tapping on it. In `react-router-dom`, a `<Link>` renders an accessible `<a>` element with a real `href` that points to the resource it's linking to. This means that things like right-clicking a `<Link>` work as you'd expect. You can use `<Link reloadDocument>` to skip client side routing and let the browser handle the transition normally (as if it were an `<a href>`).
+`<Link>` 是一个让用户点击它导航到另一个页面的元素，`<Link>` 在 `react-router-dom` 中渲染一个带有所链接资源 `href` 的可访问 `<a>` 标签。 可以使用 `<Link reloadDocument>` 来跳过客户端路由，让浏览器正常处理跳转（就好像一个 `<a href>`）。
 
 ```tsx
 import * as React from "react";
@@ -284,24 +282,22 @@ function UsersIndexPage({ users }) {
 }
 ```
 
-A relative `<Link to>` value (that does not begin with `/`) resolves relative to the parent route, which means that it builds upon the URL path that was matched by the route that rendered that `<Link>`. It may contain `..` to link to routes further up the hierarchy. In these cases, `..` works exactly like the command-line `cd` function; each `..` removes one segment of the parent path.
+由渲染 `<Link>` 的路由匹配的 URL 路径所构建、相对于父路由进行解析的 `<Link to>` 相对值（不以 `/` 开头）可能包含 `..` 用以链接到更上层的路由，`..` 的工作方式与命令行的 `cd` 函数完全一样，每个 `..` 删除父路径一段。
 
-> **Note:**
+> **注意：**
 >
-> `<Link to>` with a `..` behaves differently from a normal `<a href>` when the
-> current URL ends with `/`. `<Link to>` ignores the trailing slash, and removes
-> one URL segment for each `..`. But an `<a href>` value handles `..`
-> differently when the current URL ends with `/` vs when it does not.
+> 当当前 URL 以 `/` 结尾，
+> 带有 `..` 的 `<Link to>` 行为与正常 `<a href>` 不同。 `<Link to>` 忽略尾部斜杠并删除
+> 每个 `..` 一个 URL 段，而`<a href>` 值处理 `..` 的方式会以当前 URL 是否以 `/` 结尾而不同。
 
 ### `<Link>` (React Native)
 
-> **Note:**
+> **注意：**
 >
-> This is the React Native version of `<Link>`. For the web version,
-> [go here](#link).
+> 这是 `<Link>` 的 React Native 版，web 版[去这里](#link)。
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function Link(props: LinkProps): React.ReactElement;
@@ -317,7 +313,7 @@ interface LinkProps extends TouchableHighlightProps {
 
 </details>
 
-A `<Link>` is an element that lets the user navigate to another view by tapping it, similar to how `<a>` elements work in a web app. In `react-router-native`, a `<Link>` renders a `TouchableHighlight`. To override default styling and behaviour, please refer to the [Props reference for `TouchableHighlight`](https://reactnative.dev/docs/touchablehighlight#props).
+`<Link>` 是一个让用户轻敲（tap）它导航到另一个视图的元素，类似于 `<a>` 元素在 web 应用中的工作方式，`<Link>` 在 `react-router-native` 中会渲染一个 `TouchableHighlight`。 要覆盖默认样式和行为，请参阅 [`TouchableHighlight` 的 Props 参考](https://reactnative.dev/docs/touchablehighlight#props)。
 
 ```tsx
 import * as React from "react";
@@ -337,7 +333,7 @@ function Home() {
 ### `<NavLink>`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function NavLink(
@@ -367,17 +363,16 @@ interface NavLinkProps
 
 </details>
 
-A `<NavLink>` is a special kind of [`<Link>`](#link) that knows whether or not it is "active". This is useful when building a navigation menu such as a breadcrumb or a set of tabs where you'd like to show which of them is currently selected. It also provides useful context for assistive technology like screen readers.
+`<NavLink>` 是一种能知道它是否激活（active）的特殊 [`<Link>`](#link)，能用在构建导航菜单（例如面包屑或一组选项卡（tabs））时在显示当前选择了哪些选项卡，还为屏幕阅读器等辅助技术提供了有用的上下文（context）
 
-By default, an `active` class is added to a `<NavLink>` component when it is active. This provides the same simple styling mechanism for most users who are upgrading from v5. One difference as of `v6.0.0-beta.3` is that `activeClassName` and `activeStyle` have been removed from `NavLinkProps`. Instead, you can pass a function to either `style` or `className` that will allow you to customize the inline styling or the class string based on the component's active state. you can also pass a function as children to customize the content of the `<NavLink>` component based on their active state, specially useful to change styles on internal elements.
+`<NavLink>` 组件激活时会默认添加 `active` 类，为大多数从 v5 升级的用户提供了同样简单的样式机制。 与 v6.0.0-beta.3 不同，NavLinkProps 中已删除了 activeClassName 和 activeStyle；但根据组件是否激活，可以将函数传递给 `style` 或 `className` 来自定义内联样式或类字符串，也可以将函数作为子项传递给自定义 `<NavLink>` 组件来更改内部元素样式。
 
 ```tsx
 import * as React from "react";
 import { NavLink } from "react-router-dom";
 
 function NavList() {
-  // This styling will be applied to a <NavLink> when the
-  // route that it links to is currently selected.
+  // 将当前所选路由的样式应用于 <NavLink>。
   let activeStyle = {
     textDecoration: "underline"
   };
@@ -424,7 +419,7 @@ function NavList() {
 }
 ```
 
-If you prefer the v5 API, you can create your own `<NavLink />` as a wrapper component:
+如果更喜欢 v5 API，可以创建自己的 `<NavLink />` 作为封装组件：
 
 ```tsx
 import * as React from "react";
@@ -454,7 +449,7 @@ const NavLink = React.forwardRef(
 );
 ```
 
-If the `end` prop is used, it will ensure this component isn't matched as "active" when its descendant paths are matched. For example, to render a link that is only active at the website root and not any other URLs, you can use:
+使用 `end` 属性会确保该组件在其后代路径匹配时不会被匹配为 “active”。 例如，要渲染仅在网站根目录激活而非其他 URL 激活的链接时如下：
 
 ```tsx
 <NavLink to="/" end>
@@ -465,7 +460,7 @@ If the `end` prop is used, it will ensure this component isn't matched as "activ
 ### `<Navigate>`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function Navigate(props: NavigateProps): null;
@@ -479,13 +474,11 @@ interface NavigateProps {
 
 </details>
 
-A `<Navigate>` element changes the current location when it is rendered. It's a component wrapper around [`useNavigate`](#usenavigate), and accepts all the same arguments as props.
+`<Navigate>` 元素在渲染时会更改当前 location ，是 [`useNavigate`](#usenavigate) 的封装组件并接受相同参数作为 props。
 
-> **Note:**
+> **注意：**
 >
-> Having a component-based version of the `useNavigate` hook makes it easier to
-> use this feature in a [`React.Component`](https://reactjs.org/docs/react-component.html)
-> subclass where hooks are not able to be used.
+> 拥有基于组件（component-based）的 `useNavigate` hook可以用在不能使用 hooks 的 [`React.Component`](https://reactjs.org/docs/react-component.html) 子类上。
 
 ```tsx
 import * as React from "react";
@@ -525,7 +518,7 @@ class LoginForm extends React.Component {
 ### `<Outlet>`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 interface OutletProps {
@@ -538,17 +531,14 @@ declare function Outlet(
 
 </details>
 
-An `<Outlet>` should be used in parent route elements to render their child route elements. This allows nested UI to show up when child routes are rendered. If the parent route matched exactly, it will render a child index route or nothing if there is no index route.
+父路由元素中通过使用 `<Outlet>` 渲染子路由元素来显示嵌套 UI。 如果父路由精确匹配将渲染子索引路由，没有索引路由不渲染任何内容。
 
 ```tsx
 function Dashboard() {
   return (
     <div>
       <h1>Dashboard</h1>
-
-      {/* This element will render either <DashboardMessages> when the URL is
-          "/messages", <DashboardTasks> at "/tasks", or null if it is "/"
-      */}
+      {/* 当 URL 为 "/messages" 时 <Outlet> 会渲染 <DashboardMessages>，为 "/tasks" 时会渲染 <DashboardTasks>，为 "/" 时 渲染 null */}
       <Outlet />
     </div>
   );
@@ -572,7 +562,7 @@ function App() {
 ### `useOutletContext`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function useOutletContext<
@@ -582,7 +572,7 @@ declare function useOutletContext<
 
 </details>
 
-Often parent routes manage state or other values you want shared with child routes. You can create your own [context provider](https://reactjs.org/docs/context.html) if you like, but this is such a common situation that it's built-into `<Outlet />`:
+通常由父路由管理与子路由共享的状态或其他值，[context provider](https://reactjs.org/docs/context.html) 可按需创建但一般内置于 `<Outlet />` 中：
 
 ```tsx lines=[3]
 function Parent() {
@@ -599,7 +589,7 @@ function Child() {
 }
 ```
 
-If you're using TypeScript, we recommend the parent component provide a custom hook for accessing the context value. This makes it easier for consumers to get nice typings, control consumers, and know who's consuming the context value. Here's a more realistic example:
+使用 TypeScript时，父组件最好提供一个自定义 hook 来访问 context 值以使消费者更容易获得好的类型、控制消费者并知道谁在消费 context，下面是一个更实际的例子：
 
 ```tsx filename=src/routes/dashboard.tsx lines=[12,17-19]
 import * as React from "react";
@@ -640,7 +630,7 @@ export default function DashboardMessages() {
 ### `<Router>`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function Router(
@@ -659,20 +649,20 @@ interface RouterProps {
 
 </details>
 
-`<Router>` is the low-level interface that is shared by all router components ([`<BrowserRouter>`](#browserrouter), [`<HashRouter>`](#hashrouter), [`<StaticRouter>`](#staticrouter), [`<NativeRouter>`](#nativerouter), and [`<MemoryRouter>`](#memoryrouter)). In terms of React, `<Router>` is a [context provider](https://reactjs.org/docs/context.html#contextprovider) that supplies routing information to the rest of the app.
+`<Router>` 是所有路由器组件（[`<BrowserRouter>`](#browserrouter), [`<HashRouter>`](#hashrouter), [`<StaticRouter>`](#staticrouter)、[`<NativeRouter>`](#nativerouter) 和 [`<MemoryRouter>`](#memoryrouter)）共享的底层接口，对于 React 是一个 [context provider](https://reactjs.org/docs/context.html#contextprovider)，为应用的其余部分提供路由信息。
 
-You probably never need to render a `<Router>` manually. Instead, you should use one of the higher-level routers depending on your environment. You only ever need one router in a given app.
+可能永远不需要手动渲染一个 `<Router>`，而是根据环境使用更高级 routers 的一种。 在一个给定的应用中只需一个 router。
 
-The `<Router basename>` prop may be used to make all routes and links in your app relative to a "base" portion of the URL pathname that they all share. This is useful when rendering only a portion of a larger app with React Router or when your app has multiple entry points. Basenames are not case-sensitive.
+在应用中，`<Router basename>` 属性可能在创建所有路由和链接都会被用到，因为它是它们都共享的 URL pathname 的“基本”部分，常用于使用 React Router 渲染较大应用的一部分或应用具有多个入口点时。 基本名称（Basenames）不区分大小写。
 
 <a name="routes"></a>
 <a name="route"></a>
 <a name="routes-and-route"></a>
 
-### `<Routes>` and `<Route>`
+### `<Routes>` 和 `<Route>`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function Routes(
@@ -699,9 +689,9 @@ interface RouteProps {
 
 </details>
 
-`<Routes>` and `<Route>` are the primary ways to render something in React Router based on the current [`location`](#location). You can think about a `<Route>` kind of like an `if` statement; if its `path` matches the current URL, it renders its `element`! The `<Route caseSensitive>` prop determines if the matching should be done in a case-sensitive manner (defaults to `false`).
+`<Routes>` 和 `<Route>` 是基于当前 [`location`](#location) 在 React Router 中渲染内容的主要方式。`<Route>` 可以想象成一个 `if` 语句，`path` 匹配当前 URL 时会渲染 `element`！ `<Route caseSensitive>` 属性确定匹配是否区分大小写（默认为 `false`）。
 
-Whenever the location changes, `<Routes>` looks through all its `children` `<Route>` elements to find the best match and renders that branch of the UI. `<Route>` elements may be nested to indicate nested UI, which also correspond to nested URL paths. Parent routes render their child routes by rendering an [`<Outlet>`](#outlet).
+每当 location 发生变化时，`<Routes>` 都会查找所有 `children` `<Route>` 元素以找到最佳匹配并渲染 UI 的对应分支。 `<Route>` 元素可以嵌套以表示嵌套的 UI 并对应嵌套的 URL 路径。 父路由通过 [`<Outlet>`](#outlet) 渲染子路由。
 
 ```tsx
 <Routes>
@@ -716,14 +706,14 @@ Whenever the location changes, `<Routes>` looks through all its `children` `<Rou
 </Routes>
 ```
 
-> **Note:**
+> **注意：**
 >
-> If you'd prefer to define your routes as regular JavaScript objects instead
-> of using JSX, [try `useRoutes` instead](#useroutes).
+> 要把路由定义为常规 JavaScript 对象而不是使用 JSX，
+> [尝试使用 `useRoutes` 代替](#useroutes)。
 
-The default `<Route element>` is an [`<Outlet>`](#outlet). This means the route will still render its children even without an explicit `element` prop, so you can nest route paths without nesting UI around the child route elements.
+`<Route element>` 默认是一个 [`<Outlet>`](#outlet)，即使没有明确的 `element` 属性，路由仍然会渲染其子元素，因此可以嵌套路由路径且无需在子路由元素周围嵌套 UI。
 
-For example, in the following config the parent route renders an `<Outlet>` by default, so the child route will render without any surrounding UI. But the child route's path is `/users/:id` because it still builds on its parent.
+例如在以下配置中，父路由默认渲染一个 `<Outlet>`，因此子路由将在没有任何周围 UI 的情况下渲染，不过子路由的路径会是 `/users/:id` 因为仍然在父路由上构建。
 
 ```tsx
 <Route path="users">
@@ -734,7 +724,7 @@ For example, in the following config the parent route renders an `<Outlet>` by d
 ### `<StaticRouter>`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function StaticRouter(
@@ -750,9 +740,9 @@ interface StaticRouterProps {
 
 </details>
 
-`<StaticRouter>` is used to render a React Router web app in [node](https://nodejs.org). Provide the current location via the `location` prop.
+`<StaticRouter>` 用于在 [node](https://nodejs.org) 中渲染 React Router Web 应用程序，通过 `location` 属性提供当前 location 。
 
-- `<StaticRouter location>` defaults to `"/"`
+- `<StaticRouter location>` 默认为 `"/"`
 
 ```tsx
 import * as React from "react";
@@ -763,7 +753,7 @@ import http from "http";
 function requestHandler(req, res) {
   let html = ReactDOMServer.renderToString(
     <StaticRouter location={req.url}>
-      {/* The rest of your app goes here */}
+      {/* app的其余部分在这里 */}
     </StaticRouter>
   );
 
@@ -777,7 +767,7 @@ http.createServer(requestHandler).listen(3000);
 ### `createRoutesFromChildren`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function createRoutesFromChildren(
@@ -795,12 +785,12 @@ interface RouteObject {
 
 </details>
 
-`createRoutesFromChildren` is a helper that creates route objects from `<Route>` elements. It is used internally in a [`<Routes>` element](#routes-and-route) to generate a route config from its [`<Route>`](#routes-and-route) children.
+`createRoutesFromChildren` 是用 `<Route>` 创建路由对象的辅助函数，在 [`<Routes>`](#routes-and-route) 内部使用，用来给 [`<Route>`](#routes-and-route) 子级生成路由配置。
 
 ### `generatePath`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function generatePath(
@@ -811,7 +801,7 @@ declare function generatePath(
 
 </details>
 
-`generatePath` interpolates a set of params into a route path string with `:id` and `*` placeholders. This can be useful when you want to eliminate placeholders from a route path so it matches statically instead of using a dynamic parameter.
+`generatePath` 将一组参数插入到带有 `:id` 和 `*` 占位符的路由路径字符串中，常用于从路由路径中消除占位符以使其静态匹配而非使用动态参数。
 
 ```tsx
 generatePath("/users/:id", { id: 42 }); // "/users/42"
@@ -823,19 +813,19 @@ generatePath("/files/:type/*", {
 
 ### `Location`
 
-The term "location" in React Router refers to [the `Location` interface](https://github.com/remix-run/history/blob/main/docs/api-reference.md#location) from the [history](https://github.com/remix-run/history) library.
+React Router 中的术语 “location” 是指来自 [history](https://github.com/remix-run/history) 库的 `Location` 接口。
 
-> **Note:**
+> **注意：**
 >
-> The `history` package is React Router's only dependency and many of the
-> core types in React Router come directly from that library including
-> `Location`, `To`, `Path`, `State`, and others. You can read more about
-> the history library in [its documentation](https://github.com/remix-run/history/tree/main/docs).
+> `history` 库是 React Router 唯一依赖项，许多
+> React Router 中的核心类型直接来自该库，包括
+> `Location`、`To`、`Path`、`State` 等。 可以阅读
+> [其文档](https://github.com/remix-run/history/tree/main/docs) 了解更多。
 
 ### `matchRoutes`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function matchRoutes(
@@ -853,14 +843,14 @@ interface RouteMatch<ParamKey extends string = string> {
 
 </details>
 
-`matchRoutes` runs the route matching algorithm for a set of routes against a given [`location`](#location) to see which routes (if any) match. If it finds a match, an array of `RouteMatch` objects is returned, one for each route that matched.
+`matchRoutes` 对给定 [`location`](#location) 的一组路由使用路由匹配算法以查看哪些路由匹配（如果有），找到匹配项则返回一个每项分别对应一个匹配路由的 `RouteMatch` 对象数组。
 
-This is the heart of React Router's matching algorithm. It is used internally by [`useRoutes`](#useroutes) and the [`<Routes>` component](#routes-and-route) to determine which routes match the current location. It can also be useful in some situations where you want to manually match a set of routes.
+这是 React Router 匹配算法的核心，[`useRoutes`](#useroutes) 和 [`<Routes>` 组件](#routes-and-route) 在内部使用它来确定哪些路由与当前 location 匹配，可在某些情况下用于手动匹配一组路由。
 
 ### `renderMatches`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function renderMatches(
@@ -870,12 +860,12 @@ declare function renderMatches(
 
 </details>
 
-`renderMatches` renders the result of `matchRoutes()` into a React element.
+`renderMatches` 将 `matchRoutes()` 的结果渲染到 React 元素中。
 
 ### `matchPath`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function matchPath<
@@ -900,14 +890,14 @@ interface PathPattern {
 
 </details>
 
-`matchPath` matches a route path pattern against a URL pathname and returns information about the match. This is useful whenever you need to manually run the router's matching algorithm to determine if a route path matches or not. It returns `null` if the pattern does not match the given pathname.
+`matchPath` 将路由路径模式（path pattern）与 URL pathname 匹配以返回有关匹配信息，常用于手动运行router的匹配算法以确定路由路径是否匹配，不匹配返回 `null`。
 
-The [`useMatch` hook](#usematch) uses this function internally to match a route path relative to the current location.
+[`useMatch` hook](#usematch) 在内部使用此函数来匹配当前 location 的路由路径。
 
 ### `resolvePath`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function resolvePath(
@@ -926,14 +916,14 @@ interface Path {
 
 </details>
 
-`resolvePath` resolves a given `To` value into an actual `Path` object with an absolute `pathname`. This is useful whenever you need to know the exact path for a relative `To` value. For example, the `<Link>` component uses this function to know the actual URL it points to.
+`resolvePath` 将给定 `To` 值解析为具有绝对 `pathname` 的 `Path` 对象，常用于获取相对“To”值的确切路径，例如 `<Link>` 组件用它获取指向的 URL。
 
-The [`useResolvedPath` hook](#useresolvedpath) uses `resolvePath` internally to resolve the pathname. If `to` contains a pathname, it is resolved against the current route pathname. Otherwise, it is resolved against the current URL (`location.pathname`).
+[`useResolvedPath` hook](#useResolvedpath) 在内部使用 `resolvePath` 解析 pathname，如果 `to` 包含 pathname 则根据当前路由 pathname 进行解析，否则会根据当前 URL（`location.pathname`） 进行解析。
 
 ### `useHref`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function useHref(to: To): string;
@@ -941,18 +931,18 @@ declare function useHref(to: To): string;
 
 </details>
 
-The `useHref` hook returns a URL that may be used to link to the given `to` location, even outside of React Router.
+`useHref` hook 返回一个可链接到给定 `to` 的 location 的 URL，该 location 可以在 React Router 之外。
 
-> **Tip:**
+> **提示：**
 >
-> You may be interested in taking a look at the source for the `<Link>`
-> component in `react-router-dom` to see how it uses `useHref` internally to
-> determine its own `href` value.
+> 有兴趣可查看 `react-router-dom` 中 `<Link>` 的源代码
+> ，看看如何在内部使用 `useHref`
+> 确定 `<Link>` 的 `href` 值。
 
 ### `useLinkClickHandler`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function useLinkClickHandler<
@@ -970,7 +960,7 @@ declare function useLinkClickHandler<
 
 </details>
 
-The `useLinkClickHandler` hook returns a click event handler to for navigation when building a custom `<Link>` in `react-router-dom`.
+在 `react-router-dom` 中构建自定义 `<Link>` 时，`useLinkClickHandler` hook 会返回一个点击事件 handler 来进行导航。
 
 ```tsx
 import {
@@ -1020,7 +1010,7 @@ const Link = React.forwardRef(
 ### `useLinkPressHandler`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function useLinkPressHandler<
@@ -1036,7 +1026,7 @@ declare function useLinkPressHandler<
 
 </details>
 
-The `react-router-native` counterpart to `useLinkClickHandler`, `useLinkPressHandler` returns a press event handler for custom `<Link>` navigation.
+作为 `useLinkClickHandler` 在 `react-router-native` 中的对应项，`useLinkPressHandler` 返回一个用于自定义 `<Link>` 导航的 press 事件 handler。
 
 ```tsx
 import { TouchableHighlight } from "react-native";
@@ -1071,7 +1061,7 @@ function Link({
 ### `useInRouterContext`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function useInRouterContext(): boolean;
@@ -1079,12 +1069,12 @@ declare function useInRouterContext(): boolean;
 
 </details>
 
-The `useInRouterContext` hooks returns `true` if the component is being rendered in the context of a `<Router>`, `false` otherwise. This can be useful for some 3rd-party extensions that need to know if they are being rendered in the context of a React Router app.
+根据组件是否在包含 `<Router>` 的上下文中渲染， `useInRouterContext` hook 返回 `true` 或 `false`，常用于第三方扩展检验是否在包含 React Router 应用程序的上下文中。
 
 ### `useLocation`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function useLocation(): Location;
@@ -1098,7 +1088,7 @@ interface Location<S extends State = object | null>
 
 </details>
 
-This hook returns the current [`location`](#location) object. This can be useful if you'd like to perform some side effect whenever the current location changes.
+此 hook 返回当前 [`location`](#location) 对象，可用于在当前 location 改变时执行一些副作用。
 
 ```tsx
 import * as React from 'react';
@@ -1120,7 +1110,7 @@ function App() {
 ### `useNavigationType`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function useNavigationType(): NavigationType;
@@ -1130,12 +1120,12 @@ type NavigationType = "POP" | "PUSH" | "REPLACE";
 
 </details>
 
-This hook returns the current type of navigation or how the user came to the current page; either via a pop, push, or replace action on the history stack.
+此 hook 通过 history 堆栈上 pop、push 或 replace 操作，返回当前导航类型或者用户进入当前页的方式。
 
 ### `useMatch`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function useMatch<ParamKey extends string = string>(
@@ -1145,14 +1135,14 @@ declare function useMatch<ParamKey extends string = string>(
 
 </details>
 
-Returns match data about a route at the given path relative to the current location.
+返回给定路径相对当前 location 的路由匹配数据。
 
-See [`matchPath`](#matchpath) for more information.
+有关详细信息，请参阅 [`matchPath`](#matchpath)。
 
 ### `useNavigate`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function useNavigate(): NavigateFunction;
@@ -1168,7 +1158,7 @@ interface NavigateFunction {
 
 </details>
 
-The `useNavigate` hook returns a function that lets you navigate programmatically, for example after a form is submitted.
+`useNavigate` hook 返回一个用编程方式导航的函数，可用于例如提交表单。
 
 ```tsx
 import { useNavigate } from "react-router-dom";
@@ -1186,15 +1176,15 @@ function SignupForm() {
 }
 ```
 
-The `navigate` function has two signatures:
+`navigate` 函数有两个签名：
 
-- Either pass a `To` value (same type as `<Link to>`) with an optional second `{ replace, state }` arg or
-- Pass the delta you want to go in the history stack. For example, `navigate(-1)` is equivalent to hitting the back button.
+- 传一个带有可选第二个 `{ replace, state }` 变量（arg）的 `To` 值（与 `<Link to>` 类型相同） 或
+- 传想要入 history 堆栈的增量，例如 `navigate(-1)` 相当于点击后退按钮。
 
 ### `useOutlet`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function useOutlet(): React.ReactElement | null;
@@ -1202,12 +1192,12 @@ declare function useOutlet(): React.ReactElement | null;
 
 </details>
 
-Returns the element for the child route at this level of the route hierarchy. This hook is used internally by [`<Outlet>`](#outlet) to render child routes.
+返回位于该子路由层级的子路由元素，[`<Outlet>`](#outlet) 在内部使用此 hook 来渲染子路由。
 
 ### `useParams`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function useParams<
@@ -1217,14 +1207,14 @@ declare function useParams<
 
 </details>
 
-The `useParams` hook returns an object of key/value pairs of the dynamic params from the current URL that were matched by the `<Route path>`. Child routes inherit all params from their parent routes.
+`useParams` hook 返回当前 URL 与 `<Route path>` 匹配的动态参数的键值对（key/value pairs）对象，子路由继承父路由的所有参数。
 
 ```tsx
 import * as React from 'react';
 import { Routes, Route, useParams } from 'react-router-dom';
 
 function ProfilePage() {
-  // Get the userId param from the URL.
+  // 从 URL 中获取 userId
   let { userId } = useParams();
   // ...
 }
@@ -1244,7 +1234,7 @@ function App() {
 ### `useResolvedPath`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function useResolvedPath(to: To): Path;
@@ -1252,16 +1242,14 @@ declare function useResolvedPath(to: To): Path;
 
 </details>
 
-This hook resolves the `pathname` of the location in the given `to` value against the pathname of the current location.
+此 hook 把给定 `to` 值 location 的 `pathname` 与当前 location 的 pathname 对比进行解析，可用于用相对值构建链接，例如 [`<NavLink>`](#navlink) 源代码内部调用 `useResolvedPath` 解析链接到页面的完整 pathname。
 
-This is useful when building links from relative values. For example, check out the source to [`<NavLink>`](#navlink) which calls `useResolvedPath` internally to resolve the full pathname of the page being linked to.
-
-See [`resolvePath`](#resolvepath) for more information.
+有关详细信息，请参阅 [`resolvePath`](#resolvepath)。
 
 ### `useRoutes`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function useRoutes(
@@ -1272,9 +1260,9 @@ declare function useRoutes(
 
 </details>
 
-The `useRoutes` hook is the functional equivalent of [`<Routes>`](#routes), but it uses JavaScript objects instead of `<Route>` elements to define your routes. These objects have the same properties as normal [`<Route>` elements](#routes-and-route), but they don't require JSX.
+`useRoutes` hook 在功能上等同于 [`<Routes>`](#routes) 但使用 JavaScript 对象而不是 `<Route>` 元素来定义路由，所用对象与普通 [`<Route>` 元素](#routes-and-route) 具有相同属性但不需要用 JSX。
 
-The return value of `useRoutes` is either a valid React element you can use to render the route tree, or `null` if nothing matched.
+`useRoutes` 返回值是一个可用来渲染路由树的有效 React 元素，如果没有匹配项则返回 `null`。
 
 ```tsx
 import * as React from "react";
@@ -1302,13 +1290,12 @@ function App() {
 
 ### `useSearchParams`
 
-> **Note:**
+> **注意：**
 >
-> This is the web version of `useSearchParams`. For the React Native version,
-> [go here](#usesearchparams-react-native).
+> 这是 `useSearchParams` 的 web 版，React Native 版[去这里](#usesearchparams-react-native)。
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function useSearchParams(
@@ -1333,7 +1320,7 @@ interface URLSearchParamsSetter {
 
 </details>
 
-The `useSearchParams` hook is used to read and modify the query string in the URL for the current location. Like React's own [`useState` hook](https://reactjs.org/docs/hooks-reference.html#usestate), `useSearchParams` returns an array of two values: the current location's [search params](https://developer.mozilla.org/en-US/docs/Web/API/URL/searchParams) and a function that may be used to update them.
+`useSearchParams` hook 用于读取和修改 URL 中当前 location 的查询字符串（query string），和 React 的 [`useState` hook](https://reactjs.org/docs/hooks-reference.html#usestate) 一样返回一个长度为2的数组：当前 location 的 [search params](https://developer.mozilla.org/en-US/docs/Web/API/URL/searchParams) 和一个可用来更新前者的函数。
 
 ```tsx
 import * as React from "react";
@@ -1344,9 +1331,7 @@ function App() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    // The serialize function here would be responsible for
-    // creating an object of { key: value } pairs from the
-    // fields in the form that make up the query.
+    // 这里序列化函数将用于从构成查询的表单字段创建一个键值对对象。
     let params = serializeFormQuery(event.target);
     setSearchParams(params);
   }
@@ -1359,22 +1344,20 @@ function App() {
 }
 ```
 
-> **Note:**
+> **注意：**
 >
-> The `setSearchParams` function works like [`navigate`](#usenavigate), but
-> only for the [search portion](https://developer.mozilla.org/en-US/docs/Web/API/Location/search)
-> of the URL. Also note that the second arg to `setSearchParams` is
-> the same type as the second arg to `navigate`.
+> `setSearchParams` 函数工作方式类似于 [`navigate`](#usenavigate)，但
+> 仅适用于 URL 的 [search 部分](https://developer.mozilla.org/en-US/docs/Web/API/Location/search)。
+> 另请注意，`setSearchParams` 的第二个参数与 `navigate` 的第二个参数类型相同。
 
 ### `useSearchParams` (React Native)
 
-> **Note:**
+> **注意：**
 >
-> This is the React Native version of `useSearchParams`. For the web version,
-> [go here](#usesearchparams).
+> 这是 `useSearchParams` 的 React Native 版，web 版[去这里](#usesearchparams)。
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function useSearchParams(
@@ -1399,7 +1382,7 @@ interface URLSearchParamsSetter {
 
 </details>
 
-The `useSearchParams` hook is used to read and modify the query string in the URL for the current location. Like React's own [`useState` hook](https://reactjs.org/docs/hooks-reference.html#usestate), `useSearchParams` returns an array of two values: the current location's [search params](https://developer.mozilla.org/en-US/docs/Web/API/URL/searchParams) and a function that may be used to update them.
+用法与 web 版相同。
 
 ```tsx
 import * as React from "react";
@@ -1429,7 +1412,7 @@ function App() {
 ### `createSearchParams`
 
 <details>
-  <summary>Type declaration</summary>
+  <summary>类型声明</summary>
 
 ```tsx
 declare function createSearchParams(
@@ -1439,4 +1422,4 @@ declare function createSearchParams(
 
 </details>
 
-`createSearchParams` is a thin wrapper around [`new URLSearchParams(init)`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/URLSearchParams) that adds support for using objects with array values. This is the same function that `useSearchParams` uses internally for creating `URLSearchParams` objects from `URLSearchParamsInit` values.
+`createSearchParams` 是 [`new URLSearchParams(init)`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/URLSearchParams) 增加了对带有数组值对象支持的一层简单封装，也是 `useSearchParams` 在内部用 `URLSearchParamsInit` 值创建 `URLSearchParams` 对象的函数。
