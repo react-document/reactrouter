@@ -1,4 +1,4 @@
 ---
-title: Getting Started
+title: 入门
 order: 3
 ---
