@@ -17,7 +17,7 @@ React Router 在 npm 发布三个不同的包：
 - [`react-router-dom`](https://npm.im/react-router-dom) 包括 `react-router` 的所有内容，并添加了一些特定于 DOM 的 API，包括 [`<BrowserRouter>`](#browserrouter)，[`<HashRouter>`](#hashrouter) 和 [`<Link>`](#link)
 - [`react-router-native`](https://npm.im/react-router-native) 包括 `react-router` 的所有内容，并添加了一些特定于 React Native 的 API，包括 [`<NativeRouter>`](#nativerouter) 和 [`<Link>` 的原生版本](#link-react-native)
 
-`react-router-dom` 和 `react-router-native` 在安装时都会自动包含 `react-router` 作为依赖，并且这两个包都从 `react-router` 重新 export 所有内容。当 import 时，总是 import from `react-router-dom` 或 `react-router-native` 而非直接 import from `react-router`，否则可能会意外在应用中 import 不匹配版本的库（library）。
+`react-router-dom` 和 `react-router-native` 在安装时都会自动包含 `react-router` 作为依赖，并且都从 `react-router` 重新 export 所有内容。当 import 时，总是 import from `react-router-dom` 或 `react-router-native` 而非直接 import from `react-router`，否则可能会意外在应用中 import 不匹配版本的库（library）。
 
 如果[安装](./getting-started/installation.md) React Router 以在全局使用（使用 `<script>` 标签），可以在 `window.ReactRouterDOM` 对象上找到该库。如果从 npm 安装，则可以 import 需要的部分。本参考中的示例均使用 `import` 语法。
 
@@ -56,7 +56,7 @@ React Router 的导航接口可通过修改当前 [location](#location) 来改�
 
 - [`useResolvedPath`](#useresolvedpath) - 解析当前 [location](#location) 的相对路径
 - [`useHref`](#usehref) - 解析适合用作 `<a href>` 的相对路径
-- [`useLocation`](#uselocation) 和 [`useNavigationType`](#usenavigationtype) - 这些描述了当前 [location](#location) 以及如何导航到该 location
+- [`useLocation`](#uselocation) 和 [`useNavigationType`](#usenavigationtype) - 描述了当前 [location](#location) 以及如何导航到该 location
 - [`useLinkClickHandler`](#uselinkclickhandler) - 在 `react-router-dom` 中构建自定义 `<Link>` 时返回（return）用于导航的 event handler
 - [`useLinkPressHandler`](#uselinkpresshandler) - 在 `react-router-native` 中构建自定义 `<Link>` 时返回用于导航的 event handler
 - [`resolvePath`](#resolvepath) - 根据给定的 URL pathname 解析相对路径
@@ -124,7 +124,7 @@ interface HashRouterProps {
 
 </details>
 
-`<HashRouter>` 用于 Web 浏览器 URL 由于某种原因不应（或不能）发送到服务器时，在某些无法完全控制服务器的共享托管方案中可能需要它。 这些情况下当前 location 可以被 `<HashRouter>` 存储在当前 URL 的 `hash` 中，因此永远不会被发送到服务器。
+`<HashRouter>` 用于 Web 浏览器 URL 由于某种原因不应（或不能）发送到服务器时，比如在某些无法完全控制服务器的共享托管方案中。 这些情况下当前 location 可以被 `<HashRouter>` 存储在当前 URL 的 `hash` 中，因此永远不会被发送到服务器。
 
 `<HashRouter window>` 默认使用当前[文档的 `defaultView`](https://developer.mozilla.org/en-US/docs/Web/API/Document/defaultView)，也可用于跟踪对另一个窗口 URL 的更改，例如在 `<iframe>` 中。
 
@@ -365,7 +365,7 @@ interface NavLinkProps
 
 `<NavLink>` 是一种能知道它是否激活（active）的特殊 [`<Link>`](#link)，能用在构建导航菜单（例如面包屑或一组选项卡（tabs））时在显示当前选择了哪些选项卡，还为屏幕阅读器等辅助技术提供了有用的上下文（context）
 
-`<NavLink>` 组件激活时会默认添加 `active` 类， 这为大多数从 v5 升级的用户提供了同样简单的样式机制。 与 v6.0.0-beta.3 不同，NavLinkProps 中已删除了 activeClassName 和 activeStyle；但根据组件是否激活，可以将函数传递给 `style` 或 `className` 来自定义内联样式或类字符串，也可以将函数作为子项传递给自定义 `<NavLink>` 组件来更改内部元素样式。
+`<NavLink>` 组件激活时会默认添加 `active` 类，为大多数从 v5 升级的用户提供了同样简单的样式机制。 与 v6.0.0-beta.3 不同，NavLinkProps 中已删除了 activeClassName 和 activeStyle；但根据组件是否激活，可以将函数传递给 `style` 或 `className` 来自定义内联样式或类字符串，也可以将函数作为子项传递给自定义 `<NavLink>` 组件来更改内部元素样式。
 
 ```tsx
 import * as React from "react";
@@ -691,7 +691,7 @@ interface RouteProps {
 
 `<Routes>` 和 `<Route>` 是基于当前 [`location`](#location) 在 React Router 中渲染内容的主要方式。`<Route>` 可以想象成一个 `if` 语句，`path` 匹配当前 URL 时会渲染 `element`！ `<Route caseSensitive>` 属性确定匹配是否区分大小写（默认为 `false`）。
 
-每当 location 发生变化时，`<Routes>` 都会查找所有 `children` `<Route>` 元素以找到最佳匹配并渲染 UI 的这个分支。 `<Route>` 元素可以嵌套以表示嵌套的 UI 并对应嵌套的 URL 路径。 父路由通过 [`<Outlet>`](#outlet) 渲染子路由。
+每当 location 发生变化时，`<Routes>` 都会查找所有 `children` `<Route>` 元素以找到最佳匹配并渲染 UI 的对应分支。 `<Route>` 元素可以嵌套以表示嵌套的 UI 并对应嵌套的 URL 路径。 父路由通过 [`<Outlet>`](#outlet) 渲染子路由。
 
 ```tsx
 <Routes>
@@ -1088,7 +1088,7 @@ interface Location<S extends State = object | null>
 
 </details>
 
-这个 hook 返回当前 [`location`](#location) 对象，可用于在当前 location 改变时执行一些副作用。
+此 hook 返回当前 [`location`](#location) 对象，可用于在当前 location 改变时执行一些副作用。
 
 ```tsx
 import * as React from 'react';
@@ -1120,7 +1120,7 @@ type NavigationType = "POP" | "PUSH" | "REPLACE";
 
 </details>
 
-这个 hook 通过 history 堆栈上 pop、push 或 replace 操作，返回当前导航类型或者用户进入当前页的方式。
+此 hook 通过 history 堆栈上 pop、push 或 replace 操作，返回当前导航类型或者用户进入当前页的方式。
 
 ### `useMatch`
 
@@ -1192,7 +1192,7 @@ declare function useOutlet(): React.ReactElement | null;
 
 </details>
 
-返回位于该子路由层级的子路由元素，[`<Outlet>`](#outlet) 在内部使用这个 hook 来渲染子路由。
+返回位于该子路由层级的子路由元素，[`<Outlet>`](#outlet) 在内部使用此 hook 来渲染子路由。
 
 ### `useParams`
 
@@ -1242,7 +1242,7 @@ declare function useResolvedPath(to: To): Path;
 
 </details>
 
-这个 hook 把给定 `to` 值 location 的 `pathname` 与当前 location 的 pathname 对比进行解析，可用于用相对值构建链接，例如 [`<NavLink>`](#navlink) 源代码内部调用 `useResolvedPath` 解析链接到页面的完整 pathname。
+此 hook 把给定 `to` 值 location 的 `pathname` 与当前 location 的 pathname 对比进行解析，可用于用相对值构建链接，例如 [`<NavLink>`](#navlink) 源代码内部调用 `useResolvedPath` 解析链接到页面的完整 pathname。
 
 有关详细信息，请参阅 [`resolvePath`](#resolvepath)。
 
@@ -1260,7 +1260,7 @@ declare function useRoutes(
 
 </details>
 
-`useRoutes` hook 在功能上等同于 [`<Routes>`](#routes) 但使用 JavaScript 对象而不是 `<Route>` 元素来定义路由，这些对象与普通 [`<Route>` 元素](#routes-and-route) 具有相同属性但不需要用 JSX。
+`useRoutes` hook 在功能上等同于 [`<Routes>`](#routes) 但使用 JavaScript 对象而不是 `<Route>` 元素来定义路由，所用对象与普通 [`<Route>` 元素](#routes-and-route) 具有相同属性但不需要用 JSX。
 
 `useRoutes` 返回值是一个可用来渲染路由树的有效 React 元素，如果没有匹配项则返回 `null`。
 
@@ -1422,4 +1422,4 @@ declare function createSearchParams(
 
 </details>
 
-`createSearchParams` 是 [`new URLSearchParams(init)`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/URLSearchParams) 增加了对带有数组值对象支持的一层简单封装，这也是 `useSearchParams` 在内部用 `URLSearchParamsInit` 值创建 `URLSearchParams` 对象的函数。
+`createSearchParams` 是 [`new URLSearchParams(init)`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/URLSearchParams) 增加了对带有数组值对象支持的一层简单封装，也是 `useSearchParams` 在内部用 `URLSearchParamsInit` 值创建 `URLSearchParams` 对象的函数。
