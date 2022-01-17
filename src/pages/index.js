@@ -15,10 +15,24 @@ function HomepageHeader() {
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
           <Link
-            className="button button--secondary button--lg"
-            to="/docs/index">
-            Docusaurus Tutorial - 5min ⏱️
+            className={`button button--secondary button--lg ${styles.linkMargin}`}
+            to="/docs/">
+              阅读文档
           </Link>
+          <Link
+            className="button button--secondary button--lg"
+            to="/docs/getting-started/tutorial">
+              开始教程
+          </Link>
+          </div>
+
+          <div className={styles.sandbox}>
+            <iframe src="https://codesandbox.io/embed/cool-villani-b80ts?fontsize=14&hidenavigation=1&theme=dark"
+            style={{ width: "100%", height: 500, border: 0, borderRadius: 4, overflow: "hidden" }}
+            title="cool-villani-b80ts"
+              allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+              sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+            ></iframe>
         </div>
       </div>
     </header>
@@ -30,10 +44,10 @@ export default function Home() {
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      image={'https://fanyi.baidu.com/appdownload/download.html?tab=app&appchannel=webbannerfinal&fr=pcproduct'}
+      description="React Router v6 中文">
       <HomepageHeader />
       <main>
-        <HomepageFeatures />
       </main>
     </Layout>
   );
