@@ -16,6 +16,14 @@
   }
 }
 
+.linkMargin{
+  margin-right: 20px;
+}
+
+.sandbox {
+  margin: 40px 0;
+}
+
 .buttons {
   display: flex;
   align-items: center;

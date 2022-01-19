@@ -259,7 +259,7 @@ export default function App() {
 }
 ```
 
-现在再次单击。父路由 ( App.js) 仍然存在，而<Outlet>在两个子路由 (<Invoices>和<Expenses>)之间切换！
+现在再次单击。父路由 ( App.js) 仍然存在，而 `<Outlet>` 在两个子路由 (`<Invoices>` 和 `<Expenses>`)之间切换！
 正如我们稍后将看到的，这适用于路由层次结构的任何级别，并且非常强大。
 
 ## 列出发票
@@ -307,7 +307,7 @@ export function getInvoices() {
 }
 ```
 
-现在我们可以在发票路由中使用它。让我们也添加一些样式来获得侧边栏导航布局。随意复制/粘贴所有这些，但要特别注意<Link>组件需要 to 属性：
+现在我们可以在发票路由中使用它。让我们也添加一些样式来获得侧边栏导航布局。随意复制/粘贴所有这些，但要特别注意 `<Link>` 组件需要 to 属性：
 
 ```js lines=[17] filename=src/routes/invoices.jsx
 import { Link } from "react-router-dom";
@@ -381,7 +381,7 @@ export default function Invoice() {
 
 让我们定义一个路由来匹配这些类型的 URL，并使我们能够从中获取发票编号。
 
-在“发票”路由中创建一个新的 <Route> ，如下所示：
+在“发票”路由中创建一个新的 `<Route>` ，如下所示：
 
 ```js lines=[4-6] filename=src/main.jsx
 <Routes>
@@ -405,7 +405,7 @@ export default function Invoice() {
 需要注意的几点：
 
 - 我们刚刚创建了一个匹配“/invoices/2005”和“/invoices/1998”等 URL 的路由。:invoiceId路径的一部分是“URL 参数”，这意味着只要模式相同，它就可以匹配任何值。
-- <Route>在匹配时增加路由嵌套的第二层：<App><Invoices><Invoice /></Invoices></App>。因为<Route>是嵌套的，所以 UI 也会被嵌套。
+- `<Route>` 在匹配时增加路由嵌套的第二层：`<App><Invoices><Invoice /></Invoices></App>` 。因为 `<Route>` 是嵌套的，所以 UI 也会被嵌套。
 
 好了，现在点击一个发票链接，注意 URL 发生了变化，但新的发票组件还没有显示出来。你知道为什么吗？
 
@@ -673,7 +673,7 @@ export default function Invoices() {
 
 ## 自定义行为
 
-如果您对列表进行过滤，然后单击链接，您会注意到列表不再被过滤，搜索参数从' <input> '和URL中清除。你可能想要这个，也可能不想!也许您想要过滤列表，并在 URL 中保留参数。
+如果您对列表进行过滤，然后单击链接，您会注意到列表不再被过滤，搜索参数从' `<input>` '和URL中清除。你可能想要这个，也可能不想!也许您想要过滤列表，并在 URL 中保留参数。
 
 当我们点击一个链接时，我们可以通过将它添加到链接的href来持久化查询字符串。我们会将React Router 中的“ NavLink ”和“ useLocation ”组合成我们自己的“ QueryNavLink ”(也许还有更好的名字，但这就是我们今天要讲的)。
 

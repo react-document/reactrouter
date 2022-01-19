@@ -50,9 +50,9 @@ React Router 不仅仅是将 url 与函数或组件匹配：它是关于构建�
 
 - <a id="route-config">**Route Config**</a> - 一棵**路由对象**树，将针对当前位置进行排名和匹配（使用嵌套）以创建**路由匹配**的分支。
 
-- <a id="route">**Route**</a> - 一个对象或路由元素，通常具有 { path, element } 或 <Route path element> 的形状。路径是路径模式。当路径模式与当前 URL 匹配时，将呈现该元素。
+- <a id="route">**Route**</a> - 一个对象或路由元素，通常具有 { path, element } 或 `&lt;Route path element> 的形状。路径是路径模式。当路径模式与当前 URL 匹配时，将呈现该元素。
 
-- <a id="route-element">**Route Element**</a> - Or `&lt;Route>`. <Routes> 读取该元素的 props 以创建路由，否则什么也不做。
+- <a id="route-element">**Route Element**</a> - Or `&lt;Route>`. `&lt;Routes> 读取该元素的 props 以创建路由，否则什么也不做。
 
 - <a id="nested-routes">**Nested Routes**</a> - 因为路由可以有子路由，并且每个路由都定义了 [URL](#url) 到 [segments](#segment) 的一部分，所以单个 URL 可以匹配树的嵌套“分支”中的多个路由。这可以通过 [outlet](#outlet)、[relative links](#relative-links) 等实现自动布局嵌套。
 
