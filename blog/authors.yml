@@ -16,12 +16,6 @@ slorber:
   url: https://sebastienlorber.com
   image_url: https://github.com/slorber.png
 
-zhangrenyang:
-  name: zhangrenyang
-  title: China
-  url: https://github.com/zhangrenyang
-  image_url: https://github.com/zhangrenyang.png
-
 cy7613089:
   name: 杨陈
   title: China
@@ -100,8 +94,26 @@ suruirui:
    url: https://github.com/suruirui
    image_url: https://github.com/suruirui.png
    
-zzs1020: 
+ZeshiZheng: 
  name: ZeshiZheng
  title: Associate @ Morgan Stanley
  url: https://github.com/zzs1020
  image_url:  https://github.com/zzs1020.png   
+
+rockboom: 
+ name: rockboom
+ title: China
+ url: https://github.com/rockboom
+ image_url:  https://github.com/rockboom.png
+
+edisonLzy: 
+ name: edisonLzy
+ title: China 
+ url: https://github.com/edisonLzy 
+ image_url: https://github.com/edisonLzy.png
+
+zhangrenyang:
+  name: zhangrenyang
+  title: China
+  url: https://github.com/zhangrenyang
+  image_url: https://github.com/zhangrenyang.png
