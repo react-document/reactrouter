@@ -708,8 +708,8 @@ interface RouteProps {
 
 > **注意：**
 >
-> 要把路由定义为常规 JavaScript 对象而不是使用 JSX，
-> [尝试使用 `useRoutes` 代替](#useroutes)。
+> 如果要把路由定义为常规 JavaScript 对象而不是使用 JSX，
+> [请尝试使用 `useRoutes` 代替](#useroutes)。
 
 `<Route element>` 默认是一个 [`<Outlet>`](#outlet)，即使没有明确的 `element` 属性，路由仍然会渲染其子元素，因此可以嵌套路由路径且无需在子路由元素周围嵌套 UI。
 
