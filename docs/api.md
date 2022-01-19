@@ -649,7 +649,7 @@ interface RouterProps {
 
 </details>
 
-`<Router>` 是所有路由器组件（[`<BrowserRouter>`](#browserrouter), [`<HashRouter>`](#hashrouter), [`<StaticRouter>`](#staticrouter)、[`<NativeRouter>`](#nativerouter) 和 [`<MemoryRouter>`](#memoryrouter)）共享的底层接口，对于 React 是一个 [context provider](https://reactjs.org/docs/context.html#contextprovider)，为应用的其余部分提供路由信息。
+`<Router>` 是所有 router 组件（[`<BrowserRouter>`](#browserrouter), [`<HashRouter>`](#hashrouter), [`<StaticRouter>`](#staticrouter)、[`<NativeRouter>`](#nativerouter) 和 [`<MemoryRouter>`](#memoryrouter)）共享的底层接口，对于 React 是一个 [context provider](https://reactjs.org/docs/context.html#contextprovider)，为应用的其余部分提供路由信息。
 
 可能永远不需要手动渲染一个 `<Router>`，而是根据环境使用更高级 routers 的一种。 在一个给定的应用中只需一个 router。
 
