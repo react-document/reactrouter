@@ -56,17 +56,22 @@ const config = {
             position: 'left',
             label: '教程',
           },
-          {to: '/blog', label: '我们', position: 'left'},
+          { to: '/blog', label: '加入我们', position: 'left' },
+          {
+            href: 'https://github.com/react-document/reactrouter',
+            label: '文档仓库',
+            position: 'right',
+          },
           {
             href: 'https://github.com/remix-run/react-router',
-            label: 'GitHub',
+            label: '代码仓库',
             position: 'right',
           },
         ],
       },
       footer: {
         style: 'dark',
-        
+
         links: [
           {
             title: '文档',

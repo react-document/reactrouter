@@ -50,7 +50,7 @@ React Router 不仅仅是将 url 与函数或组件匹配：它是关于构建�
 
 - <a id="route-config">**Route Config**</a> - 一棵**路由对象**树，将针对当前位置进行排名和匹配（使用嵌套）以创建**路由匹配**的分支。
 
-- <a id="route">**Route**</a> - 一个对象或路由元素，通常具有 { path, element } 或 `&lt;Route path element> 的形状。路径是路径模式。当路径模式与当前 URL 匹配时，将呈现该元素。
+- <a id="route">**Route**</a> - 一个对象或路由元素，通常具有  path, element  或 `&lt;Route path element> 的形状。路径是路径模式。当路径模式与当前 URL 匹配时，将呈现该元素。
 
 - <a id="route-element">**Route Element**</a> - Or `&lt;Route>`. `&lt;Routes> 读取该元素的 props 以创建路由，否则什么也不做。
 

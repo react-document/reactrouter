@@ -835,4 +835,4 @@ export default function Invoice() {
 
 恭喜！你已经完成了本教程。我们希望它可以帮助您了解 React Router。
 
-如果您遇到问题，请查看[资源](/resources)页面以获取帮助。祝你好运！
+如果您遇到问题，请查看资源页面以获取帮助。祝你好运！
