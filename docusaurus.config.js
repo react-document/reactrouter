@@ -8,13 +8,13 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'react router v6 中文文档',
   tagline: 'React Router v6在十年客户端路由的基础上, 集成了以前版本的最佳功能, 而且包体积最小最强大',
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://www.reactrouter.cn/',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  projectName: 'react-router', // Usually your repo name.
 
   presets: [
     [
@@ -46,7 +46,7 @@ const config = {
       navbar: {
         title: 'react router v6 中文文档',
         logo: {
-          alt: 'My Site Logo',
+          alt: 'Logo',
           src: 'img/logo.png',
         },
         items: [
@@ -113,7 +113,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()}.`,
       },
       prism: {
         theme: lightCodeTheme,

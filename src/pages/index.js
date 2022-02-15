@@ -4,7 +4,6 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './index.module.css';
-import HomepageFeatures from '../components/HomepageFeatures';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -41,6 +40,15 @@ function HomepageHeader() {
 
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
+  React.useEffect(() => {
+    var hm = window.document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?3787670caff23f077f9aa40c32a8e3c8";
+    window.document.body.appendChild(hm);
+    var a = window.document.createElement("a");
+    a.href = 'http://beian.miit.gov.cn';
+    a.innerHTML = '京ICP备19003167号-2';
+    window.document.body.appendChild(a);
+  }, []);
   return (
     <Layout
       title={`React路由`}
