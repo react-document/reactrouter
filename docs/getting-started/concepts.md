@@ -13,7 +13,7 @@ order: 4
 
 不要担心看不懂本文档！对于日常使用来说，React Router 非常简单。你并不需要深入学习。
 
-React Router 不仅仅是将 url 与函数或组件匹配：它是关于构建一个映射到 URL 的完整用户界面，因此它可能包含比您习惯的更多概念。我们将详细介绍 React Router 的三个主要功能：
+React Router 不仅仅是将 url 与函数或组件匹配：它是关于构建一个映射到 URL 的完整用户界面，所以里面的概念可能比你以前用的多。我们将详细介绍 React Router 的三个主要功能：
 
 1. 订阅和操作 [history stack](#history-stack)
 2. 匹配 [URL](#url)  [routes](#route-config)
